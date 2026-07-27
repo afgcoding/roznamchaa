@@ -1,0 +1,39 @@
+<?php
+
+namespace App\Filament\Resources\Categories\Schemas;
+
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
+
+class CategoryForm
+{
+    public static function configure(Schema $schema): Schema
+    {
+        return $schema
+            ->components([
+                Section::make('Category Details')
+                    ->description('Group your shop products into clear categories like Oils, Grains, or Beverages.')
+                    ->icon(Heroicon::OutlinedTag)
+                    ->columnSpanFull()
+                    ->schema([
+                        TextInput::make('name')
+                            ->label('Category Name')
+                            ->placeholder('e.g. Oils, Grains, Beverages, Biscuits')
+                            ->helperText('Short name for this product group. Keep it simple and easy to find.')
+                            ->required()
+                            ->maxLength(255)
+                            ->autofocus()
+                            ->columnSpanFull(),
+                        Textarea::make('description')
+                            ->label('Description')
+                            ->placeholder('e.g. Cooking oils and ghee used in daily kitchen sales')
+                            ->helperText('Optional note to explain what belongs in this category. Leave blank if not needed.')
+                            ->rows(4)
+                            ->columnSpanFull(),
+                    ]),
+            ]);
+    }
+}
