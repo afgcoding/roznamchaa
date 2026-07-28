@@ -27,7 +27,7 @@ class UnitsTable
                     ->searchable()
                     ->sortable()
                     ->badge()
-                    ->color('primary'),
+                    ->color('gray'),
                 TextColumn::make('purchase_products_count')
                     ->counts('purchaseProducts')
                     ->label('Purchase Use')

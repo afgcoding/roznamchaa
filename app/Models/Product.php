@@ -55,4 +55,12 @@ class Product extends Model
     {
         return $this->hasMany(SaleItem::class);
     }
+
+    /**
+     * True when this product appears on any sale bill.
+     */
+    public function isUsedInSales(): bool
+    {
+        return $this->saleItems()->exists();
+    }
 }
