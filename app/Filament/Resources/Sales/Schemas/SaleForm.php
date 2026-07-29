@@ -11,6 +11,7 @@ use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
@@ -164,42 +165,47 @@ class SaleForm
                             ->required()
                             ->placeholder('Select payment type')
                             ->helperText('Cash = fully paid. Credit = unpaid. Partial = paid some.'),
-                        TextInput::make('paid_amount')
-                            ->label('Paid Amount')
-                            ->placeholder('e.g. 1000')
-                            ->helperText('How much the customer paid now.')
-                            ->required()
-                            ->numeric()
-                            ->default(0)
-                            ->prefix('AFN')
-                            ->minValue(0)
-                            ->formatStateUsing(fn ($state) => $state === null || $state === '' ? $state : NumberFormat::trim($state, 2))
-                            ->live(onBlur: true)
-                            ->afterStateUpdated(function ($state, callable $get, callable $set): void {
-                                self::recalculateTotals($get, $set);
-                            }),
-                        TextInput::make('total_amount')
-                            ->label('Grand Total')
-                            ->placeholder('Auto')
-                            ->helperText('Sum of all item subtotals.')
-                            ->required()
-                            ->numeric()
-                            ->default(0)
-                            ->prefix('AFN')
-                            ->formatStateUsing(fn ($state) => $state === null || $state === '' ? $state : NumberFormat::trim($state, 2))
-                            ->readOnly(),
+                        Grid::make(3)
+                            ->columnSpanFull()
+                            ->schema([
+                                TextInput::make('paid_amount')
+                                    ->label('Paid Amount')
+                                    ->placeholder('e.g. 1000')
+                                    ->helperText('How much the customer paid now.')
+                                    ->required()
+                                    ->numeric()
+                                
+                                    ->default(0)
+                                    ->prefix('AFN')
+                                    ->minValue(0)
+                                    ->formatStateUsing(fn ($state) => $state === null || $state === '' ? $state : NumberFormat::trim($state, 2))
+                                    ->live(onBlur: true)
+                                    ->afterStateUpdated(function ($state, callable $get, callable $set): void {
+                                        self::recalculateTotals($get, $set);
+                                    }),
+                                TextInput::make('total_amount')
+                                    ->label('Grand Total')
+                                    ->placeholder('Auto')
+                                    ->helperText('Sum of all item subtotals.')
+                                    ->required()
+                                    ->numeric()
+                                    ->default(0)
+                                    ->prefix('AFN')
+                                    ->formatStateUsing(fn ($state) => $state === null || $state === '' ? $state : NumberFormat::trim($state, 2))
+                                    ->readOnly(),
+                                TextInput::make('due_amount')
+                                    ->label('Due Amount')
+                                    ->placeholder('Auto')
+                                    ->helperText('Grand total − paid amount. Remaining qarz.')
+                                    ->required()
+                                    ->numeric()
+                                    ->default(0)
+                                    ->prefix('AFN')
+                                    ->formatStateUsing(fn ($state) => $state === null || $state === '' ? $state : NumberFormat::trim($state, 2))
+                                    ->readOnly(),
+                            ]),
                         Hidden::make('payable_amount')
                             ->default(0),
-                        TextInput::make('due_amount')
-                            ->label('Due Amount')
-                            ->placeholder('Auto')
-                            ->helperText('Grand total − paid amount. Remaining qarz.')
-                            ->required()
-                            ->numeric()
-                            ->default(0)
-                            ->prefix('AFN')
-                            ->formatStateUsing(fn ($state) => $state === null || $state === '' ? $state : NumberFormat::trim($state, 2))
-                            ->readOnly(),
                     ]),
             ]);
     }

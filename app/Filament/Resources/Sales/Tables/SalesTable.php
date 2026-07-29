@@ -69,7 +69,7 @@ class SalesTable
                     ->formatStateUsing(fn ($state): string => 'AFN '.NumberFormat::trim($state, 2))
                     ->sortable()
                     ->badge()
-                    ->color('success'),
+                    ->color('warning'),
                 // sales.due_amount decimal(12,2)
                 TextColumn::make('due_amount')
                     ->label('Due Amount')

@@ -2,15 +2,25 @@
 
 namespace App\Filament\Resources\Customers\Schemas;
 
+use App\Support\NumberFormat;
 use Filament\Forms\Components\TextInput;
+use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
 
 class CustomerForm
 {
     public static function configure(Schema $schema): Schema
     {
         return $schema
-            ->components(static::components());
+            ->components([
+                Section::make('Customer Details')
+                    ->description('Basic info and credit limit for this customer.')
+                    ->icon(Heroicon::OutlinedUser)
+                    ->columnSpanFull()
+                    ->columns(2)
+                    ->schema(static::components()),
+            ]);
     }
 
     /**
@@ -24,26 +34,28 @@ class CustomerForm
             TextInput::make('name')
                 ->label('Customer Name')
                 ->placeholder('e.g. احمد خان')
-                ->helperText('Full name of the customer.')
+                ->helperText('Full name of the customer so cashiers can find them quickly.')
                 ->required()
                 ->maxLength(255)
                 ->autofocus(),
             TextInput::make('phone')
                 ->label('Phone')
                 ->placeholder('e.g. 0700000000')
-                ->helperText('Mobile number used to contact the customer.')
+                ->helperText('Mobile number used to call or message this customer.')
                 ->tel()
                 ->required()
                 ->maxLength(255),
             TextInput::make('credit_limit')
                 ->label('Credit Limit')
                 ->placeholder('e.g. 5000')
-                ->helperText('Maximum qarz this customer is allowed.')
+                ->helperText('Maximum qarz this customer is allowed. Use 0 for cash-only.')
                 ->required()
                 ->numeric()
                 ->default(0)
                 ->prefix('AFN')
-                ->minValue(0),
+                ->minValue(0)
+                ->formatStateUsing(fn ($state) => $state === null || $state === '' ? $state : NumberFormat::trim($state, 2))
+                ->columnSpanFull(),
         ];
     }
 }

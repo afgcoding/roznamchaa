@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Support\NumberFormat;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -22,6 +23,17 @@ class Sale extends Model
             'paid_amount' => 'decimal:2',
             'due_amount' => 'decimal:2',
         ];
+    }
+
+    /**
+     * Label used in ledger forms/tables, e.g. #INV-1002 - 2026-07-29 - Due: 220 AFN
+     */
+    public function ledgerBillLabel(): string
+    {
+        $date = $this->created_at?->format('Y-m-d') ?? '—';
+        $due = NumberFormat::trim($this->due_amount, 2);
+
+        return "#INV-{$this->id} - {$date} - Due: {$due} AFN";
     }
 
     /**
