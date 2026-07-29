@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Products\Schemas;
 
+use App\Support\NumberFormat;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Section;
@@ -74,6 +75,7 @@ class ProductForm
                             ->numeric()
                             ->default(1)
                             ->minValue(0.001)
+                            ->formatStateUsing(fn ($state) => self::trimOrKeep($state, 3))
                             ->live(onBlur: true)
                             ->afterStateUpdated(function ($state, callable $get, callable $set): void {
                                 self::recalculateCostPrice($get, $set);
@@ -95,6 +97,7 @@ class ProductForm
                             ->prefix('AFN')
                             ->minValue(0)
                             ->dehydrated(false)
+                            ->formatStateUsing(fn ($state) => self::trimOrKeep($state, 2))
                             ->live(onBlur: true)
                             ->afterStateUpdated(function ($state, callable $get, callable $set): void {
                                 self::recalculateCostPrice($get, $set);
@@ -107,6 +110,7 @@ class ProductForm
                             ->numeric()
                             ->prefix('AFN')
                             ->minValue(0)
+                            ->formatStateUsing(fn ($state) => self::trimOrKeep($state, 2))
                             ->readOnly(),
                         TextInput::make('sale_price')
                             ->label('Sale Price')
@@ -115,7 +119,8 @@ class ProductForm
                             ->required()
                             ->numeric()
                             ->prefix('AFN')
-                            ->minValue(0),
+                            ->minValue(0)
+                            ->formatStateUsing(fn ($state) => self::trimOrKeep($state, 2)),
                     ]),
 
                 Section::make('Stock')
@@ -131,6 +136,7 @@ class ProductForm
                             ->numeric()
                             ->minValue(0)
                             ->dehydrated(false)
+                            ->formatStateUsing(fn ($state) => self::trimOrKeep($state, 3))
                             ->live(onBlur: true)
                             ->afterStateUpdated(function ($state, callable $get, callable $set): void {
                                 self::recalculateStockQuantity($get, $set);
@@ -143,6 +149,7 @@ class ProductForm
                             ->numeric()
                             ->default(0)
                             ->minValue(0)
+                            ->formatStateUsing(fn ($state) => self::trimOrKeep($state, 3))
                             ->readOnly(),
                         TextInput::make('min_stock_alert')
                             ->label('Min Stock Alert')
@@ -151,7 +158,8 @@ class ProductForm
                             ->required()
                             ->numeric()
                             ->default(5)
-                            ->minValue(0),
+                            ->minValue(0)
+                            ->formatStateUsing(fn ($state) => self::trimOrKeep($state, 0)),
                     ]),
             ]);
     }
@@ -168,7 +176,7 @@ class ProductForm
             return;
         }
 
-        $set('cost_price', round((float) $purchaseUnitPrice / $conversion, 2));
+        $set('cost_price', NumberFormat::trim((float) $purchaseUnitPrice / $conversion, 2));
     }
 
     /**
@@ -183,6 +191,15 @@ class ProductForm
             return;
         }
 
-        $set('stock_quantity', round((float) $purchasedUnits * $conversion, 3));
+        $set('stock_quantity', NumberFormat::trim((float) $purchasedUnits * $conversion, 3));
+    }
+
+    protected static function trimOrKeep(mixed $state, int $maxDecimals): mixed
+    {
+        if ($state === null || $state === '') {
+            return $state;
+        }
+
+        return NumberFormat::trim($state, $maxDecimals);
     }
 }

@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Products\Pages;
 
 use App\Filament\Resources\Products\Concerns\ProtectsProductsUsedInSales;
 use App\Filament\Resources\Products\ProductResource;
+use App\Support\NumberFormat;
 use Filament\Actions\Action;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\ViewAction;
@@ -69,8 +70,20 @@ class EditProduct extends EditRecord
         $conversion = (float) ($data['unit_conversion'] ?? 0);
 
         if ($conversion > 0) {
-            $data['purchase_unit_price'] = round((float) ($data['cost_price'] ?? 0) * $conversion, 2);
-            $data['purchased_stock_units'] = round((float) ($data['stock_quantity'] ?? 0) / $conversion, 3);
+            $data['purchase_unit_price'] = NumberFormat::trim(
+                (float) ($data['cost_price'] ?? 0) * $conversion,
+                2
+            );
+            $data['purchased_stock_units'] = NumberFormat::trim(
+                (float) ($data['stock_quantity'] ?? 0) / $conversion,
+                3
+            );
+        }
+
+        foreach (['unit_conversion' => 3, 'cost_price' => 2, 'sale_price' => 2, 'stock_quantity' => 3] as $field => $decimals) {
+            if (array_key_exists($field, $data) && $data[$field] !== null && $data[$field] !== '') {
+                $data[$field] = NumberFormat::trim($data[$field], $decimals);
+            }
         }
 
         return $data;

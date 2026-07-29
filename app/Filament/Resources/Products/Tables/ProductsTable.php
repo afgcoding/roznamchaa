@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Products\Tables;
 
 use App\Filament\Resources\Products\Concerns\ProtectsProductsUsedInSales;
+use App\Support\NumberFormat;
 use Filament\Actions\ActionGroup;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
@@ -55,20 +56,20 @@ class ProductsTable
                     ->toggleable(),
                 TextColumn::make('cost_price')
                     ->label('Cost')
-                    ->money('AFN')
+                    ->formatStateUsing(fn ($state): string => 'AFN '.NumberFormat::trim($state, 2))
                     ->sortable()
                     ->icon(Heroicon::OutlinedBanknotes)
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('sale_price')
                     ->label('Sale Price')
-                    ->money('AFN')
+                    ->formatStateUsing(fn ($state): string => 'AFN '.NumberFormat::trim($state, 2))
                     ->sortable()
                     ->icon(Heroicon::OutlinedBanknotes)
                     ->badge()
                     ->color('warning'),
                 TextColumn::make('stock_quantity')
                     ->label('Stock')
-                    ->numeric(decimalPlaces: 3)
+                    ->formatStateUsing(fn ($state): string => NumberFormat::trim($state, 3))
                     ->sortable()
                     ->badge()
                     ->color(function ($record): string {
@@ -102,7 +103,7 @@ class ProductsTable
                             return '—';
                         }
 
-                        $amount = rtrim(rtrim(number_format((float) $state, 3, '.', ''), '0'), '.');
+                        $amount = NumberFormat::trim($state, 3);
                         $unit = $record->purchaseUnit?->short_name;
 
                         return $unit ? "{$amount} {$unit}" : $amount;
@@ -112,7 +113,7 @@ class ProductsTable
                     ->color('gray'),
                 TextColumn::make('min_stock_alert')
                     ->label('Min Alert')
-                    ->numeric()
+                    ->formatStateUsing(fn ($state): string => NumberFormat::trim($state, 0))
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('created_at')

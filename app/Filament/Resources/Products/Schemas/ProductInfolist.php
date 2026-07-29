@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Products\Schemas;
 
+use App\Support\NumberFormat;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
@@ -53,7 +54,7 @@ class ProductInfolist
                             ->color('success'),
                         TextEntry::make('unit_conversion')
                             ->label('Unit Conversion')
-                            ->numeric()
+                            ->formatStateUsing(fn ($state): string => NumberFormat::trim($state, 3))
                             ->badge()
                             ->color('warning')
                             ->helperText('Sale units inside one purchase unit.'),
@@ -67,12 +68,12 @@ class ProductInfolist
                     ->schema([
                         TextEntry::make('cost_price')
                             ->label('Cost Price')
-                            ->money('AFN')
+                            ->formatStateUsing(fn ($state): string => 'AFN '.NumberFormat::trim($state, 2))
                             ->badge()
                             ->color('gray'),
                         TextEntry::make('sale_price')
                             ->label('Sale Price')
-                            ->money('AFN')
+                            ->formatStateUsing(fn ($state): string => 'AFN '.NumberFormat::trim($state, 2))
                             ->badge()
                             ->color('success'),
                     ]),
@@ -85,7 +86,7 @@ class ProductInfolist
                     ->schema([
                         TextEntry::make('stock_quantity')
                             ->label('Stock Quantity')
-                            ->numeric()
+                            ->formatStateUsing(fn ($state): string => NumberFormat::trim($state, 3))
                             ->badge()
                             ->color(function ($record): string {
                                 $stock = (float) $record->stock_quantity;
@@ -103,7 +104,7 @@ class ProductInfolist
                             }),
                         TextEntry::make('min_stock_alert')
                             ->label('Min Stock Alert')
-                            ->numeric()
+                            ->formatStateUsing(fn ($state): string => NumberFormat::trim($state, 0))
                             ->badge()
                             ->color('warning')
                             ->helperText('Warning starts at this stock level.'),
