@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Expenses\Pages;
 use App\Filament\Resources\Expenses\ExpenseResource;
 use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
+use Filament\Support\Icons\Heroicon;
 
 class ListExpenses extends ListRecords
 {
@@ -13,7 +14,10 @@ class ListExpenses extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            CreateAction::make(),
+            CreateAction::make()
+                ->label('New Expense')
+                ->icon(Heroicon::OutlinedPlusCircle)
+                ->tooltip('Add a new shop expense'),
         ];
     }
 }
