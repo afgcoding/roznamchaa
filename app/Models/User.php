@@ -17,6 +17,10 @@ class User extends Authenticatable implements FilamentUser
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
 
+    public const ROLE_ADMIN = 'admin';
+
+    public const ROLE_CASHIER = 'cashier';
+
     /**
      * Get the attributes that should be cast.
      *
@@ -32,7 +36,17 @@ class User extends Authenticatable implements FilamentUser
 
     public function canAccessPanel(Panel $panel): bool
     {
-        return $this->is_active;
+        return (bool) $this->is_active;
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->role === self::ROLE_ADMIN;
+    }
+
+    public function isCashier(): bool
+    {
+        return $this->role === self::ROLE_CASHIER;
     }
 
     /**

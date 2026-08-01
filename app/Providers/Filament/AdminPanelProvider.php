@@ -2,13 +2,14 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Auth\Login;
+use App\Filament\Pages\Dashboard;
 use App\Filament\Resources\Sales\SaleResource;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Filament\Navigation\NavigationItem;
-use Filament\Pages\Dashboard;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
@@ -29,7 +30,7 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('admin')
-            ->login()
+            ->login(Login::class)
             ->colors([
                 'primary' => Color::Amber,
             ])
@@ -56,7 +57,8 @@ class AdminPanelProvider extends PanelProvider
                     ->group('Sales & POS')
                     ->sort(1)
                     ->url(fn (): string => SaleResource::getUrl('create'))
-                    ->isActiveWhen(fn (): bool => request()->routeIs('filament.admin.resources.sales.create')),
+                    ->isActiveWhen(fn (): bool => request()->routeIs('filament.admin.resources.sales.create'))
+                    ->visible(fn (): bool => SaleResource::canAccess()),
             ])
             ->middleware([
                 EncryptCookies::class,
