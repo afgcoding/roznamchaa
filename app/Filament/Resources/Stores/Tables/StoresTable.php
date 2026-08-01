@@ -1,61 +1,59 @@
 <?php
 
-namespace App\Filament\Resources\Users\Tables;
+namespace App\Filament\Resources\Stores\Tables;
 
-use App\Models\User;
+use App\Models\Store;
 use Filament\Actions\ActionGroup;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
+use Filament\Notifications\Notification;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
-use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
 
-class UsersTable
+class StoresTable
 {
     public static function configure(Table $table): Table
     {
         return $table
             ->columns([
                 TextColumn::make('name')
-                    ->label('Name')
+                    ->label('Store')
                     ->searchable()
                     ->sortable()
                     ->wrap(),
-                TextColumn::make('email')
-                    ->label('Email')
+                TextColumn::make('slug')
+                    ->label('Slug')
                     ->searchable()
                     ->sortable()
-                    ->icon(Heroicon::OutlinedEnvelope)
-                    ->copyable()
-                    ->copyMessage('Email copied'),
-                TextColumn::make('role')
-                    ->label('Role')
                     ->badge()
-                    ->formatStateUsing(fn (?string $state): string => match ($state) {
-                        User::ROLE_SUPER_ADMIN => 'Super Admin',
-                        User::ROLE_ADMIN => 'Admin',
-                        User::ROLE_CASHIER => 'Cashier',
-                        default => (string) $state,
-                    })
-                    ->color(fn (?string $state): string => match ($state) {
-                        User::ROLE_SUPER_ADMIN => 'danger',
-                        User::ROLE_ADMIN => 'warning',
-                        User::ROLE_CASHIER => 'info',
-                        default => 'gray',
-                    })
+                    ->color('gray')
+                    ->copyable(),
+                TextColumn::make('users_count')
+                    ->counts('users')
+                    ->label('Users')
+                    ->badge()
+                    ->color('info')
                     ->sortable(),
                 ToggleColumn::make('is_active')
                     ->label('Active')
                     ->onColor('success')
                     ->offColor('danger')
-                    ->disabled(fn (User $record): bool => ! auth()->user()?->can('update', $record))
-                    ->tooltip(fn (User $record): string => $record->is_active
+                    ->afterStateUpdated(function (Store $record, mixed $state): void {
+                        Notification::make()
+                            ->title($state ? 'Store activated' : 'Store deactivated')
+                            ->body($state
+                                ? "{$record->name} can access the panel again."
+                                : "{$record->name} is blocked until reactivated.")
+                            ->color($state ? 'success' : 'danger')
+                            ->send();
+                    })
+                    ->tooltip(fn (Store $record): string => $record->is_active
                         ? 'Active — click to deactivate'
                         : 'Inactive — click to activate'),
                 TextColumn::make('created_at')
@@ -73,17 +71,11 @@ class UsersTable
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
-            ->defaultSort('created_at', 'desc')
+            ->defaultSort('name')
             ->filters([
-                SelectFilter::make('role')
-                    ->label('Role')
-                    ->options([
-                        User::ROLE_ADMIN => 'Admin',
-                        User::ROLE_CASHIER => 'Cashier',
-                    ]),
                 TernaryFilter::make('is_active')
                     ->label('Active')
-                    ->placeholder('All users')
+                    ->placeholder('All stores')
                     ->trueLabel('Active only')
                     ->falseLabel('Inactive only'),
             ])
@@ -93,16 +85,16 @@ class UsersTable
                         ->label('View')
                         ->icon(Heroicon::OutlinedEye)
                         ->color('info')
-                        ->tooltip('View user details'),
+                        ->tooltip('View store details'),
                     EditAction::make()
                         ->label('Edit')
                         ->icon(Heroicon::OutlinedPencilSquare)
                         ->color('warning')
-                        ->tooltip('Edit this user'),
+                        ->tooltip('Edit this store'),
                     DeleteAction::make()
                         ->label('Delete')
                         ->icon(Heroicon::OutlinedTrash)
-                        ->tooltip('Delete this user'),
+                        ->tooltip('Delete this store'),
                 ]),
             ])
             ->toolbarActions([

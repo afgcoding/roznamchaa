@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Filament\Resources\Users\Schemas;
+namespace App\Filament\Resources\Stores\Schemas;
 
-use App\Models\User;
 use Filament\Infolists\Components\IconEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Components\Section;
@@ -11,55 +10,45 @@ use Filament\Support\Enums\FontWeight;
 use Filament\Support\Enums\TextSize;
 use Filament\Support\Icons\Heroicon;
 
-class UserInfolist
+class StoreInfolist
 {
     public static function configure(Schema $schema): Schema
     {
         return $schema
             ->components([
-                Section::make('Account Details')
-                    ->description('Login details and role for this shop user.')
-                    ->icon(Heroicon::OutlinedUserCircle)
+                Section::make('Store Details')
+                    ->description('Shop identity and activation status.')
+                    ->icon(Heroicon::OutlinedBuildingStorefront)
                     ->columnSpanFull()
                     ->columns(3)
                     ->schema([
                         TextEntry::make('name')
-                            ->label('Full Name')
+                            ->label('Store Name')
                             ->weight(FontWeight::Bold)
                             ->size(TextSize::Large),
-                        TextEntry::make('email')
-                            ->label('Email Address')
-                            ->icon(Heroicon::OutlinedEnvelope)
-                            ->copyable()
-                            ->copyMessage('Email copied')
-                            ->placeholder('—'),
-                        TextEntry::make('role')
-                            ->label('Role')
+                        TextEntry::make('slug')
+                            ->label('URL Slug')
                             ->badge()
-                            ->formatStateUsing(fn (?string $state): string => match ($state) {
-                                User::ROLE_SUPER_ADMIN => 'Super Admin',
-                                User::ROLE_ADMIN => 'Admin',
-                                User::ROLE_CASHIER => 'Cashier',
-                                default => (string) $state,
-                            })
-                            ->color(fn (?string $state): string => match ($state) {
-                                User::ROLE_SUPER_ADMIN => 'danger',
-                                User::ROLE_ADMIN => 'warning',
-                                User::ROLE_CASHIER => 'info',
-                                default => 'gray',
-                            }),
+                            ->color('gray')
+                            ->copyable()
+                            ->copyMessage('Slug copied'),
                         IconEntry::make('is_active')
-                            ->label('Active Account')
+                            ->label('Active')
                             ->boolean()
                             ->trueIcon(Heroicon::OutlinedCheckCircle)
                             ->falseIcon(Heroicon::OutlinedXCircle)
                             ->trueColor('success')
                             ->falseColor('danger')
-                            ->helperText('Inactive users cannot log in to the panel.'),
+                            ->helperText('Inactive stores are blocked for shop staff.'),
+                        TextEntry::make('users_count')
+                            ->label('Users')
+                            ->state(fn ($record): int => $record->users()->count())
+                            ->badge()
+                            ->color('info'),
                     ]),
 
                 Section::make('Record Info')
-                    ->description('When this user was created and last updated.')
+                    ->description('When this store was created and last updated.')
                     ->icon(Heroicon::OutlinedClock)
                     ->columnSpanFull()
                     ->columns(2)

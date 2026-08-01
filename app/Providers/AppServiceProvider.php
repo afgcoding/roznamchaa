@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Filament\Auth\RegistrationResponse;
+use Filament\Auth\Http\Responses\Contracts\RegistrationResponse as RegistrationResponseContract;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\ServiceProvider;
 
@@ -12,7 +14,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->bind(RegistrationResponseContract::class, RegistrationResponse::class);
     }
 
     /**

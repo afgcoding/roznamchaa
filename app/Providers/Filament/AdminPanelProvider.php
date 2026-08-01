@@ -3,8 +3,13 @@
 namespace App\Providers\Filament;
 
 use App\Filament\Auth\Login;
+use App\Filament\Auth\Register;
 use App\Filament\Pages\Dashboard;
+use App\Filament\Pages\Tenancy\EditStoreProfile;
+use App\Filament\Pages\Tenancy\RegisterStore;
 use App\Filament\Resources\Sales\SaleResource;
+use App\Http\Middleware\EnsureStoreIsActive;
+use App\Models\Store;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -31,9 +36,20 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login(Login::class)
+            ->registration(Register::class)
             ->colors([
                 'primary' => Color::Amber,
             ])
+            ->tenant(Store::class, slugAttribute: 'slug')
+            ->tenantRegistration(RegisterStore::class)
+            ->tenantProfile(EditStoreProfile::class)
+            // Hide switcher when the user only belongs to one store (isolation).
+            ->tenantSwitcher(fn (): bool => (auth()->user()?->isSuperAdmin()
+                ? Store::query()->count() > 1
+                : (auth()->user()?->stores()->count() ?? 0) > 1))
+            ->tenantMiddleware([
+                EnsureStoreIsActive::class,
+            ], isPersistent: true)
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([

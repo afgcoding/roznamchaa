@@ -2,11 +2,14 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\BelongsToStore;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Wholesaler extends Model
 {
+    use BelongsToStore;
+
     /**
      * Get the attributes that should be cast.
      *

@@ -40,7 +40,7 @@ class ProductForm
                             ->label('Barcode')
                             ->placeholder('e.g. 8901001001001')
                             ->helperText('Optional. Add barcode if the product has one for scanning.')
-                            ->unique(ignoreRecord: true)
+                            ->scopedUnique(ignoreRecord: true)
                             ->maxLength(255)
                             ->columnSpanFull(),
                     ]),

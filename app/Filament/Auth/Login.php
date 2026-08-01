@@ -2,6 +2,7 @@
 
 namespace App\Filament\Auth;
 
+use App\Http\Middleware\EnsureStoreIsActive;
 use App\Models\User;
 use Filament\Auth\Http\Responses\Contracts\LoginResponse;
 use Filament\Auth\Pages\Login as BaseLogin;
@@ -25,6 +26,17 @@ class Login extends BaseLogin
         ) {
             throw ValidationException::withMessages([
                 'data.email' => 'Your account is inactive. Please contact an administrator.',
+            ]);
+        }
+
+        if (
+            $user
+            && $user->is_active
+            && Hash::check($data['password'] ?? '', $user->getAuthPassword())
+            && $user->hasOnlyInactiveStores()
+        ) {
+            throw ValidationException::withMessages([
+                'data.email' => EnsureStoreIsActive::MESSAGE,
             ]);
         }
 

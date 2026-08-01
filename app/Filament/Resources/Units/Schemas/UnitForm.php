@@ -32,7 +32,7 @@ class UnitForm
                             ->helperText('Short English code used in bills and reports. Keep it lowercase and simple.')
                             ->required()
                             ->maxLength(50)
-                            ->unique(ignoreRecord: true),
+                            ->scopedUnique(ignoreRecord: true),
                     ]),
             ]);
     }

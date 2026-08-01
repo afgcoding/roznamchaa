@@ -21,6 +21,11 @@ class UserResource extends Resource
 {
     protected static ?string $model = User::class;
 
+    /**
+     * Users belong to stores via the store_user pivot, not store_id.
+     */
+    protected static ?string $tenantOwnershipRelationshipName = 'stores';
+
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedUsers;
 
     protected static string|UnitEnum|null $navigationGroup = 'System Settings';
