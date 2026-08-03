@@ -16,55 +16,55 @@ class WholesalerInfolist
     {
         return $schema
             ->components([
-                Section::make('Wholesaler Details')
-                    ->description('Supplier contact information.')
+                Section::make(__('Wholesaler Details'))
+                    ->description(__('Supplier contact information.'))
                     ->icon(Heroicon::OutlinedBuildingStorefront)
                     ->columnSpanFull()
                     ->columns(2)
                     ->schema([
                         TextEntry::make('name')
-                            ->label('Wholesaler Name')
+                            ->label(__('Wholesaler Name'))
                             ->weight(FontWeight::Bold)
                             ->size(TextSize::Large),
                         TextEntry::make('phone')
-                            ->label('Phone')
+                            ->label(__('Phone'))
                             ->badge()
                             ->color('info')
                             ->placeholder('—'),
                         TextEntry::make('address')
-                            ->label('Address')
-                            ->placeholder('No address')
+                            ->label(__('Address'))
+                            ->placeholder(__('No address'))
                             ->columnSpanFull(),
                     ]),
 
-                Section::make('Debt')
-                    ->description('How much you owe this wholesaler.')
+                Section::make(__('Debt'))
+                    ->description(__('How much you owe this wholesaler.'))
                     ->icon(Heroicon::OutlinedBanknotes)
                     ->columnSpanFull()
                     ->columns(1)
                     ->schema([
                         TextEntry::make('total_debt')
-                            ->label('Total Debt')
+                            ->label(__('Total Debt'))
                             ->formatStateUsing(fn ($state): string => 'AFN '.NumberFormat::trim($state, 2))
                             ->badge()
                             ->color(fn ($state): string => (float) $state > 0 ? 'danger' : 'success'),
                     ]),
 
-                Section::make('Record Info')
-                    ->description('When this wholesaler was created and last updated.')
+                Section::make(__('Record Info'))
+                    ->description(__('When this wholesaler was created and last updated.'))
                     ->icon(Heroicon::OutlinedClock)
                     ->columnSpanFull()
                     ->columns(2)
                     ->collapsed()
                     ->schema([
                         TextEntry::make('created_at')
-                            ->label('Created At')
+                            ->label(__('Created At'))
                             ->since()
                             ->color('info')
                             ->badge()
                             ->placeholder('—'),
                         TextEntry::make('updated_at')
-                            ->label('Last Updated')
+                            ->label(__('Last Updated'))
                             ->since()
                             ->color('warning')
                             ->badge()

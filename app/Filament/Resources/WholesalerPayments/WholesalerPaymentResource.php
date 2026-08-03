@@ -23,15 +23,27 @@ class WholesalerPaymentResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBanknotes;
 
-    protected static string|UnitEnum|null $navigationGroup = 'Purchases & Suppliers';
-
     protected static ?int $navigationSort = 3;
 
-    protected static ?string $navigationLabel = 'Wholesaler Payments';
+    public static function getNavigationLabel(): string
+    {
+        return __('Wholesaler Payments');
+    }
 
-    protected static ?string $modelLabel = 'Payment';
+    public static function getNavigationGroup(): string|UnitEnum|null
+    {
+        return __('Purchases & Suppliers');
+    }
 
-    protected static ?string $pluralModelLabel = 'Wholesaler Payments';
+    public static function getModelLabel(): string
+    {
+        return __('Payment');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('Wholesaler Payments');
+    }
 
     public static function form(Schema $schema): Schema
     {

@@ -14,8 +14,8 @@ class CustomerForm
     {
         return $schema
             ->components([
-                Section::make('Customer Details')
-                    ->description('Basic info and credit limit for this customer.')
+                Section::make(__('Customer Details'))
+                    ->description(__('Basic info and credit limit for this customer.'))
                     ->icon(Heroicon::OutlinedUser)
                     ->columnSpanFull()
                     ->columns(2)
@@ -24,7 +24,7 @@ class CustomerForm
     }
 
     /**
-     * Full customer fields — reused by CustomerResource and Sale form create-option modal.
+     * Full customer fields — reused by CustomerResource and SaleForm create-option modal.
      *
      * @return array<int, TextInput>
      */
@@ -32,23 +32,23 @@ class CustomerForm
     {
         return [
             TextInput::make('name')
-                ->label('Customer Name')
-                ->placeholder('e.g. احمد خان')
-                ->helperText('Full name of the customer so cashiers can find them quickly.')
+                ->label(__('Customer Name'))
+                ->placeholder(__('e.g. احمد خان'))
+                ->helperText(__('Full name of the customer so cashiers can find them quickly.'))
                 ->required()
                 ->maxLength(255)
                 ->autofocus(),
             TextInput::make('phone')
-                ->label('Phone')
-                ->placeholder('e.g. 0700000000')
-                ->helperText('Mobile number used to call or message this customer.')
+                ->label(__('Phone'))
+                ->placeholder(__('e.g. 0700000000'))
+                ->helperText(__('Mobile number used to call or message this customer.'))
                 ->tel()
                 ->required()
                 ->maxLength(255),
             TextInput::make('credit_limit')
-                ->label('Credit Limit')
-                ->placeholder('e.g. 5000')
-                ->helperText('Maximum qarz this customer is allowed. Use 0 for cash-only.')
+                ->label(__('Credit Limit'))
+                ->placeholder(__('e.g. 5000'))
+                ->helperText(__('Maximum qarz this customer is allowed. Use 0 for cash-only.'))
                 ->required()
                 ->numeric()
                 ->default(0)

@@ -71,9 +71,10 @@ class AdminPanelProvider extends PanelProvider
                 'System Settings',
             ])
             ->navigationItems([
-                NavigationItem::make('New Sale / POS')
+                NavigationItem::make('new-sale-pos')
+                    ->label(fn (): string => __('New Sale / POS'))
                     ->icon(Heroicon::OutlinedPlusCircle)
-                    ->group('Sales & POS')
+                    ->group(fn (): string => __('Sales & POS'))
                     ->sort(1)
                     ->url(fn (): string => SaleResource::getUrl('create'))
                     ->isActiveWhen(fn (): bool => request()->routeIs('filament.admin.resources.sales.create'))

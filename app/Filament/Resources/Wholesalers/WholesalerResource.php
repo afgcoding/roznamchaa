@@ -23,13 +23,29 @@ class WholesalerResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBuildingStorefront;
 
-    protected static string|UnitEnum|null $navigationGroup = 'Purchases & Suppliers';
-
     protected static ?int $navigationSort = 2;
 
-    protected static ?string $navigationLabel = 'Wholesalers / Suppliers';
-
     protected static ?string $recordTitleAttribute = 'name';
+
+    public static function getNavigationLabel(): string
+    {
+        return __('Wholesalers / Suppliers');
+    }
+
+    public static function getNavigationGroup(): string|UnitEnum|null
+    {
+        return __('Purchases & Suppliers');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('Wholesaler');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('Wholesalers');
+    }
 
     public static function getNavigationBadge(): ?string
     {
@@ -45,7 +61,7 @@ class WholesalerResource extends Resource
 
     public static function getNavigationBadgeTooltip(): ?string
     {
-        return static::unpaidDebtCount().' supplier(s) with unpaid debt';
+        return __(':count supplier(s) with unpaid debt', ['count' => static::unpaidDebtCount()]);
     }
 
     protected static function unpaidDebtCount(): int

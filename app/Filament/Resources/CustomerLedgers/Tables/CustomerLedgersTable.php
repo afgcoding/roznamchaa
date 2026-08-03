@@ -21,13 +21,13 @@ class CustomerLedgersTable
         return $table
             ->columns([
                 TextColumn::make('customer.name')
-                    ->label('Customer')
+                    ->label(__('Customer'))
                     ->searchable()
                     ->sortable()
                     ->badge()
                     ->color('primary'),
                 TextColumn::make('sale.id')
-                    ->label('Related Bill')
+                    ->label(__('Related Bill'))
                     ->formatStateUsing(function ($state, $record): string {
                         return $record->sale?->ledgerBillLabel() ?? '—';
                     })
@@ -37,11 +37,11 @@ class CustomerLedgersTable
                     ->color('gray')
                     ->placeholder('—'),
                 TextColumn::make('type')
-                    ->label('Type')
+                    ->label(__('Type'))
                     ->badge()
                     ->formatStateUsing(fn (?string $state): string => match ($state) {
-                        'credit' => 'Credit',
-                        'payment' => 'Payment',
+                        'credit' => __('Credit (took goods on debt)'),
+                        'payment' => __('Payment (paid debt back)'),
                         default => $state ?? '—',
                     })
                     ->color(fn (?string $state): string => match ($state) {
@@ -50,32 +50,32 @@ class CustomerLedgersTable
                         default => 'gray',
                     }),
                 TextColumn::make('amount')
-                    ->label('Amount')
+                    ->label(__('Amount'))
                     ->formatStateUsing(fn ($state): string => 'AFN '.NumberFormat::trim($state, 2))
                     ->sortable()
                     ->icon(Heroicon::OutlinedBanknotes)
                     ->badge()
                     ->color(fn ($record): string => $record->type === 'payment' ? 'success' : 'danger'),
                 TextColumn::make('date')
-                    ->label('Date')
+                    ->label(__('Date'))
                     ->date()
                     ->sortable()
                     ->badge()
                     ->color('info'),
                 TextColumn::make('description')
-                    ->label('Description')
+                    ->label(__('Description'))
                     ->limit(40)
                     ->placeholder('—')
                     ->toggleable(),
                 TextColumn::make('created_at')
-                    ->label('Created')
+                    ->label(__('Created'))
                     ->since()
                     ->color('success')
                     ->badge()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')
-                    ->label('Updated')
+                    ->label(__('Updated'))
                     ->since()
                     ->color('warning')
                     ->badge()
@@ -85,39 +85,39 @@ class CustomerLedgersTable
             ->defaultSort('date', 'desc')
             ->filters([
                 SelectFilter::make('type')
-                    ->label('Entry Type')
+                    ->label(__('Entry Type'))
                     ->options([
-                        'credit' => 'Credit',
-                        'payment' => 'Payment',
+                        'credit' => __('Credit (took goods on debt)'),
+                        'payment' => __('Payment (paid debt back)'),
                     ]),
                 SelectFilter::make('customer_id')
                     ->relationship('customer', 'name')
-                    ->label('Customer')
+                    ->label(__('Customer'))
                     ->searchable()
                     ->preload(),
             ])
             ->recordActions([
                 ActionGroup::make([
                     ViewAction::make()
-                        ->label('View')
+                        ->label(__('View'))
                         ->icon(Heroicon::OutlinedEye)
                         ->color('info')
-                        ->tooltip('View ledger entry'),
+                        ->tooltip(__('View ledger entry')),
                     EditAction::make()
-                        ->label('Edit')
+                        ->label(__('Edit'))
                         ->icon(Heroicon::OutlinedPencilSquare)
                         ->color('warning')
-                        ->tooltip('Edit this entry'),
+                        ->tooltip(__('Edit this entry')),
                     DeleteAction::make()
-                        ->label('Delete')
+                        ->label(__('Delete'))
                         ->icon(Heroicon::OutlinedTrash)
-                        ->tooltip('Delete this entry'),
+                        ->tooltip(__('Delete this entry')),
                 ]),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make()
-                        ->label('Delete Selected')
+                        ->label(__('Delete Selected'))
                         ->icon(Heroicon::OutlinedTrash),
                 ]),
             ]);

@@ -23,15 +23,27 @@ class SaleResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedDocumentText;
 
-    protected static string|UnitEnum|null $navigationGroup = 'Sales & POS';
-
     protected static ?int $navigationSort = 2;
 
-    protected static ?string $navigationLabel = 'Sales Invoices';
+    public static function getNavigationLabel(): string
+    {
+        return __('Sales Invoices');
+    }
 
-    protected static ?string $modelLabel = 'Sale';
+    public static function getNavigationGroup(): string|UnitEnum|null
+    {
+        return __('Sales & POS');
+    }
 
-    protected static ?string $pluralModelLabel = 'Sales Invoices';
+    public static function getModelLabel(): string
+    {
+        return __('Sale');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('Sales Invoices');
+    }
 
     public static function getNavigationBadge(): ?string
     {
@@ -47,7 +59,7 @@ class SaleResource extends Resource
 
     public static function getNavigationBadgeTooltip(): ?string
     {
-        return static::unpaidInvoiceCount().' invoice(s) with unpaid due amount';
+        return __(':count invoice(s) with unpaid due amount', ['count' => static::unpaidInvoiceCount()]);
     }
 
     protected static function unpaidInvoiceCount(): int

@@ -15,9 +15,9 @@ class ListSales extends ListRecords
     {
         return [
             CreateAction::make()
-                ->label('New Sale / POS')
+                ->label(__('New Sale / POS'))
                 ->icon(Heroicon::OutlinedPlusCircle)
-                ->tooltip('Create a new sale invoice'),
+                ->tooltip(__('Create a new sale invoice')),
         ];
     }
 }

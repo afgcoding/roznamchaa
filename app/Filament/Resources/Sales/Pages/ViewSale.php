@@ -18,20 +18,20 @@ class ViewSale extends ViewRecord
     {
         return [
             Action::make('back')
-                ->label('Back to List')
+                ->label(__('Back to List'))
                 ->icon(Heroicon::OutlinedArrowLeft)
                 ->url($this->getResource()::getUrl('index'))
                 ->color('gray')
-                ->tooltip('Return to sales invoices list'),
+                ->tooltip(__('Return to sales invoices list')),
             EditAction::make()
-                ->label('Edit')
+                ->label(__('Edit'))
                 ->icon(Heroicon::OutlinedPencilSquare)
                 ->color('warning')
-                ->tooltip('Edit this invoice'),
+                ->tooltip(__('Edit this invoice')),
             DeleteAction::make()
-                ->label('Delete')
+                ->label(__('Delete'))
                 ->icon(Heroicon::OutlinedTrash)
-                ->tooltip('Delete this invoice')
+                ->tooltip(__('Delete this invoice'))
                 ->before(function (): void {
                     SaleStockService::restoreForSale($this->record);
                 }),

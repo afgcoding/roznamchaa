@@ -24,11 +24,11 @@ class SaleForm
             ->components([
                 Repeater::make('items')
                     ->relationship()
-                    ->label('Sale Items')
-                    ->helperText('Add products sold on this bill. Price fills automatically when you pick a product.')
+                    ->label(__('Sale Items'))
+                    ->helperText(__('Add products sold on this bill. Price fills automatically when you pick a product.'))
                     ->defaultItems(1)
                     ->minItems(1)
-                    ->addActionLabel('Add product')
+                    ->addActionLabel(__('Add product'))
                     ->reorderable(false)
                     ->columnSpanFull()
                     ->columns(4)
@@ -38,15 +38,15 @@ class SaleForm
                     })
                     ->schema([
                         Select::make('product_id')
-                            ->label('Product')
+                            ->label(__('Product'))
                             ->relationship('product', 'name')
                             ->searchable()
                             ->preload()
                             ->required()
                             ->distinct()
                             ->disableOptionsWhenSelectedInSiblingRepeaterItems()
-                            ->placeholder('Select product')
-                            ->helperText('Choose the product the customer is buying. Sale price fills in automatically.')
+                            ->placeholder(__('Select product'))
+                            ->helperText(__('Choose the product the customer is buying. Sale price fills in automatically.'))
                             ->live()
                             ->afterStateUpdated(function ($state, callable $get, callable $set): void {
                                 if (! $state) {
@@ -68,9 +68,9 @@ class SaleForm
                                 self::recalculateTotals($get, $set, fromItem: true);
                             }),
                         TextInput::make('quantity')
-                            ->label('Quantity')
-                            ->placeholder('e.g. 2')
-                            ->helperText('How many sale units (pieces / kg) the customer is buying.')
+                            ->label(__('Quantity'))
+                            ->placeholder(__('e.g. 2'))
+                            ->helperText(__('How many sale units (pieces / kg) the customer is buying.'))
                             ->numeric()
                             ->required()
                             ->default(1)
@@ -86,9 +86,9 @@ class SaleForm
                                 self::recalculateTotals($get, $set, fromItem: true);
                             }),
                         TextInput::make('unit_price')
-                            ->label('Unit Price')
-                            ->placeholder('e.g. 50')
-                            ->helperText('Sell price for one sale unit. Auto-filled from the product; you can change it.')
+                            ->label(__('Unit Price'))
+                            ->placeholder(__('e.g. 50'))
+                            ->helperText(__('Sell price for one sale unit. Auto-filled from the product; you can change it.'))
                             ->numeric()
                             ->required()
                             ->prefix('AFN')
@@ -104,9 +104,9 @@ class SaleForm
                                 self::recalculateTotals($get, $set, fromItem: true);
                             }),
                         TextInput::make('subtotal')
-                            ->label('Subtotal')
-                            ->placeholder('Auto')
-                            ->helperText('Line total: quantity × unit price. Calculated for you.')
+                            ->label(__('Subtotal'))
+                            ->placeholder(__('Auto'))
+                            ->helperText(__('Line total: quantity × unit price. Calculated for you.'))
                             ->numeric()
                             ->required()
                             ->prefix('AFN')
@@ -125,8 +125,8 @@ class SaleForm
                         return $data;
                     }),
 
-                Section::make('Sale Header')
-                    ->description('Customer, payment, and bill totals. Grand total and due update from items.')
+                Section::make(__('Sale Header'))
+                    ->description(__('Customer, payment, and bill totals. Grand total and due update from items.'))
                     ->icon(Heroicon::OutlinedDocumentText)
                     ->columnSpanFull()
                     ->columns(2)
@@ -137,44 +137,43 @@ class SaleForm
                         Hidden::make('discount')
                             ->default(0),
                         Select::make('customer_id')
-                            ->label('Customer')
+                            ->label(__('Customer'))
                             ->relationship('customer', 'name')
                             ->searchable()
                             ->preload()
                             ->nullable()
-                            ->placeholder('Walk-in customer (optional)')
-                            ->helperText('Leave empty for walk-in cash sale. Use + to add a new customer here.')
+                            ->placeholder(__('Walk-in customer (optional)'))
+                            ->helperText(__('Leave empty for walk-in cash sale. Use + to add a new customer here.'))
                             ->createOptionForm(CustomerForm::components())
                             ->createOptionUsing(function (array $data): int {
                                 return Customer::query()->create($data)->getKey();
                             })
                             ->createOptionAction(fn (Action $action): Action => $action
-                                ->modalHeading('New Customer')
-                                ->modalDescription('Add a customer without leaving this sale.')
-                                ->modalSubmitActionLabel('Save Customer')
+                                ->modalHeading(__('New Customer'))
+                                ->modalDescription(__('Add a customer without leaving this sale.'))
+                                ->modalSubmitActionLabel(__('Save Customer'))
                                 ->modalWidth('lg')
-                                ->tooltip('Add new customer')),
+                                ->tooltip(__('Add new customer'))),
                         Select::make('payment_status')
-                            ->label('Payment Status')
+                            ->label(__('Payment Status'))
                             ->options([
-                                'cash' => 'Cash',
-                                'credit' => 'Credit',
-                                'partial' => 'Partial',
+                                'cash' => __('Cash'),
+                                'credit' => __('Credit'),
+                                'partial' => __('Partial'),
                             ])
                             ->default('cash')
                             ->required()
-                            ->placeholder('Select payment type')
-                            ->helperText('Cash = fully paid. Credit = unpaid. Partial = paid some.'),
+                            ->placeholder(__('Select payment type'))
+                            ->helperText(__('Cash = fully paid. Credit = unpaid. Partial = paid some.')),
                         Grid::make(3)
                             ->columnSpanFull()
                             ->schema([
                                 TextInput::make('paid_amount')
-                                    ->label('Paid Amount')
-                                    ->placeholder('e.g. 1000')
-                                    ->helperText('How much the customer paid now.')
+                                    ->label(__('Paid Amount'))
+                                    ->placeholder(__('e.g. 1000'))
+                                    ->helperText(__('How much the customer paid now.'))
                                     ->required()
                                     ->numeric()
-                                
                                     ->default(0)
                                     ->prefix('AFN')
                                     ->minValue(0)
@@ -184,9 +183,9 @@ class SaleForm
                                         self::recalculateTotals($get, $set);
                                     }),
                                 TextInput::make('total_amount')
-                                    ->label('Grand Total')
-                                    ->placeholder('Auto')
-                                    ->helperText('Sum of all item subtotals.')
+                                    ->label(__('Grand Total'))
+                                    ->placeholder(__('Auto'))
+                                    ->helperText(__('Sum of all item subtotals.'))
                                     ->required()
                                     ->numeric()
                                     ->default(0)
@@ -194,9 +193,9 @@ class SaleForm
                                     ->formatStateUsing(fn ($state) => $state === null || $state === '' ? $state : NumberFormat::trim($state, 2))
                                     ->readOnly(),
                                 TextInput::make('due_amount')
-                                    ->label('Due Amount')
-                                    ->placeholder('Auto')
-                                    ->helperText('Grand total − paid amount. Remaining qarz.')
+                                    ->label(__('Due Amount'))
+                                    ->placeholder(__('Auto'))
+                                    ->helperText(__('Grand total − paid amount. Remaining qarz.'))
                                     ->required()
                                     ->numeric()
                                     ->default(0)

@@ -17,20 +17,20 @@ class ViewWholesaler extends ViewRecord
     {
         return [
             Action::make('back')
-                ->label('Back to List')
+                ->label(__('Back to List'))
                 ->icon(Heroicon::OutlinedArrowLeft)
                 ->url($this->getResource()::getUrl('index'))
                 ->color('gray')
-                ->tooltip('Return to wholesalers list'),
+                ->tooltip(__('Return to wholesalers list')),
             EditAction::make()
-                ->label('Edit')
+                ->label(__('Edit'))
                 ->icon(Heroicon::OutlinedPencilSquare)
                 ->color('warning')
-                ->tooltip('Edit this wholesaler'),
+                ->tooltip(__('Edit this wholesaler')),
             DeleteAction::make()
-                ->label('Delete')
+                ->label(__('Delete'))
                 ->icon(Heroicon::OutlinedTrash)
-                ->tooltip('Delete this wholesaler'),
+                ->tooltip(__('Delete this wholesaler')),
         ];
     }
 }

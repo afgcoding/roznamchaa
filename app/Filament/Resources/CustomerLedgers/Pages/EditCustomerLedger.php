@@ -18,34 +18,34 @@ class EditCustomerLedger extends EditRecord
     {
         return [
             Action::make('back')
-                ->label('Back to List')
+                ->label(__('Back to List'))
                 ->icon(Heroicon::OutlinedArrowLeft)
                 ->url($this->getResource()::getUrl('index'))
                 ->color('gray')
-                ->tooltip('Return to customer ledgers list'),
+                ->tooltip(__('Return to customer ledgers list')),
             ViewAction::make()
-                ->label('View')
+                ->label(__('View'))
                 ->icon(Heroicon::OutlinedEye)
                 ->color('info')
-                ->tooltip('View ledger entry'),
+                ->tooltip(__('View ledger entry')),
             DeleteAction::make()
-                ->label('Delete')
+                ->label(__('Delete'))
                 ->icon(Heroicon::OutlinedTrash)
-                ->tooltip('Delete this entry'),
+                ->tooltip(__('Delete this entry')),
         ];
     }
 
     protected function getSaveFormAction(): Action
     {
         return parent::getSaveFormAction()
-            ->label('Update Entry')
+            ->label(__('Update Entry'))
             ->icon(Heroicon::OutlinedCheckCircle);
     }
 
     protected function getCancelFormAction(): Action
     {
         return parent::getCancelFormAction()
-            ->label('Cancel')
+            ->label(__('Cancel'))
             ->icon(Heroicon::OutlinedXMark);
     }
 

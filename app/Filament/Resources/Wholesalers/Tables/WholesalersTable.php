@@ -28,37 +28,37 @@ class WholesalersTable
         return $table
             ->columns([
                 TextColumn::make('name')
-                    ->label('Wholesaler')
+                    ->label(__('Wholesaler'))
                     ->searchable()
                     ->sortable()
                     ->wrap(),
                 TextColumn::make('phone')
-                    ->label('Phone')
+                    ->label(__('Phone'))
                     ->searchable()
                     ->sortable()
                     ->badge()
                     ->color('info'),
                 TextColumn::make('address')
-                    ->label('Address')
+                    ->label(__('Address'))
                     ->limit(40)
                     ->placeholder('—')
                     ->toggleable(),
                 TextColumn::make('total_debt')
-                    ->label('Total Debt')
+                    ->label(__('Total Debt'))
                     ->formatStateUsing(fn ($state): string => 'AFN '.NumberFormat::trim($state, 2))
                     ->sortable()
                     ->icon(Heroicon::OutlinedBanknotes)
                     ->badge()
                     ->color(fn ($state): string => (float) $state > 0 ? 'danger' : 'success'),
                 TextColumn::make('created_at')
-                    ->label('Created')
+                    ->label(__('Created'))
                     ->since()
                     ->color('success')
                     ->badge()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')
-                    ->label('Updated')
+                    ->label(__('Updated'))
                     ->since()
                     ->color('warning')
                     ->badge()
@@ -68,23 +68,23 @@ class WholesalersTable
             ->defaultSort('created_at', 'desc')
             ->filters([
                 Filter::make('with_debt')
-                    ->label('Has unpaid debt')
+                    ->label(__('Has unpaid debt'))
                     ->query(fn (Builder $query): Builder => $query->where('total_debt', '>', 0)),
                 Filter::make('no_debt')
-                    ->label('No debt')
+                    ->label(__('No debt'))
                     ->query(fn (Builder $query): Builder => $query->where('total_debt', '<=', 0)),
             ])
             ->recordActions([
                 Action::make('pay')
-                    ->label('Pay')
+                    ->label(__('Pay'))
                     ->icon(Heroicon::OutlinedBanknotes)
                     ->color('success')
-                    ->tooltip('Quick payment to this wholesaler')
-                    ->modalHeading(fn (Wholesaler $record): string => "Pay {$record->name}")
-                    ->modalDescription(fn (Wholesaler $record): string => 'Current debt: '
-                        .NumberFormat::trim($record->total_debt, 2)
-                        .' AFN')
-                    ->modalSubmitActionLabel('Save Payment')
+                    ->tooltip(__('Quick payment to this wholesaler'))
+                    ->modalHeading(fn (Wholesaler $record): string => __('Pay :name', ['name' => $record->name]))
+                    ->modalDescription(fn (Wholesaler $record): string => __('Current debt: :amount AFN', [
+                        'amount' => NumberFormat::trim($record->total_debt, 2),
+                    ]))
+                    ->modalSubmitActionLabel(__('Save Payment'))
                     ->fillForm(fn (Wholesaler $record): array => [
                         'wholesaler_id' => $record->id,
                         'current_debt' => (float) $record->total_debt,
@@ -99,32 +99,32 @@ class WholesalersTable
                         WholesalerDebtService::applyPayment($payment);
 
                         Notification::make()
-                            ->title('Payment saved')
-                            ->body('Debt updated for '.$record->name.'.')
+                            ->title(__('Payment saved'))
+                            ->body(__('Debt updated for :name.', ['name' => $record->name]))
                             ->success()
                             ->send();
                     }),
                 ActionGroup::make([
                     ViewAction::make()
-                        ->label('View')
+                        ->label(__('View'))
                         ->icon(Heroicon::OutlinedEye)
                         ->color('info')
-                        ->tooltip('View wholesaler details'),
+                        ->tooltip(__('View wholesaler details')),
                     EditAction::make()
-                        ->label('Edit')
+                        ->label(__('Edit'))
                         ->icon(Heroicon::OutlinedPencilSquare)
                         ->color('warning')
-                        ->tooltip('Edit this wholesaler'),
+                        ->tooltip(__('Edit this wholesaler')),
                     DeleteAction::make()
-                        ->label('Delete')
+                        ->label(__('Delete'))
                         ->icon(Heroicon::OutlinedTrash)
-                        ->tooltip('Delete this wholesaler'),
+                        ->tooltip(__('Delete this wholesaler')),
                 ]),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make()
-                        ->label('Delete Selected')
+                        ->label(__('Delete Selected'))
                         ->icon(Heroicon::OutlinedTrash),
                 ]),
             ]);

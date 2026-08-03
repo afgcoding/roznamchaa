@@ -16,36 +16,36 @@ class CustomerInfolist
     {
         return $schema
             ->components([
-                Section::make('Customer Details')
-                    ->description('Basic info for this customer.')
+                Section::make(__('Customer Details'))
+                    ->description(__('Basic info for this customer.'))
                     ->icon(Heroicon::OutlinedUser)
                     ->columnSpanFull()
                     ->columns(2)
                     ->schema([
                         TextEntry::make('name')
-                            ->label('Customer Name')
+                            ->label(__('Customer Name'))
                             ->weight(FontWeight::Bold)
                             ->size(TextSize::Large),
                         TextEntry::make('phone')
-                            ->label('Phone')
+                            ->label(__('Phone'))
                             ->badge()
                             ->color('info')
                             ->placeholder('—'),
                     ]),
 
-                Section::make('Credit & Qarz')
-                    ->description('Credit limit and unpaid balance.')
+                Section::make(__('Credit & Qarz'))
+                    ->description(__('Credit limit and unpaid balance.'))
                     ->icon(Heroicon::OutlinedBanknotes)
                     ->columnSpanFull()
                     ->columns(2)
                     ->schema([
                         TextEntry::make('credit_limit')
-                            ->label('Credit Limit')
+                            ->label(__('Credit Limit'))
                             ->formatStateUsing(fn ($state): string => 'AFN '.NumberFormat::trim($state, 2))
                             ->badge()
                             ->color('gray'),
                         TextEntry::make('total_due')
-                            ->label('Total Due (Qarz)')
+                            ->label(__('Total Due (Qarz)'))
                             ->state(fn ($record): float => $record->total_due)
                             ->formatStateUsing(fn ($state): string => 'AFN '.NumberFormat::trim($state, 2))
                             ->badge()
@@ -65,21 +65,21 @@ class CustomerInfolist
                             }),
                     ]),
 
-                Section::make('Record Info')
-                    ->description('When this customer was created and last updated.')
+                Section::make(__('Record Info'))
+                    ->description(__('When this customer was created and last updated.'))
                     ->icon(Heroicon::OutlinedClock)
                     ->columnSpanFull()
                     ->columns(2)
                     ->collapsed()
                     ->schema([
                         TextEntry::make('created_at')
-                            ->label('Created At')
+                            ->label(__('Created At'))
                             ->since()
                             ->color('info')
                             ->badge()
                             ->placeholder('—'),
                         TextEntry::make('updated_at')
-                            ->label('Last Updated')
+                            ->label(__('Last Updated'))
                             ->since()
                             ->color('warning')
                             ->badge()

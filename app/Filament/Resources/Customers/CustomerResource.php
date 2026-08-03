@@ -23,13 +23,29 @@ class CustomerResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedUserGroup;
 
-    protected static string|UnitEnum|null $navigationGroup = 'Sales & POS';
-
     protected static ?int $navigationSort = 3;
 
-    protected static ?string $navigationLabel = 'Customers';
-
     protected static ?string $recordTitleAttribute = 'name';
+
+    public static function getNavigationLabel(): string
+    {
+        return __('Customers');
+    }
+
+    public static function getNavigationGroup(): string|UnitEnum|null
+    {
+        return __('Sales & POS');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('Customer');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('Customers');
+    }
 
     public static function getNavigationBadge(): ?string
     {
@@ -40,7 +56,6 @@ class CustomerResource extends Resource
 
     public static function getNavigationBadgeColor(): string|array|null
     {
-        // Over credit limit -> red, unpaid but within limit -> warning
         return static::overCreditLimitCount() > 0 ? 'danger' : 'warning';
     }
 
@@ -49,10 +64,10 @@ class CustomerResource extends Resource
         $overLimit = static::overCreditLimitCount();
 
         if ($overLimit > 0) {
-            return "{$overLimit} customer(s) over credit limit (qarz)";
+            return __(':count customer(s) over credit limit (qarz)', ['count' => $overLimit]);
         }
 
-        return static::unpaidDebtCount().' customer(s) with unpaid credit (qarz)';
+        return __(':count customer(s) with unpaid credit (qarz)', ['count' => static::unpaidDebtCount()]);
     }
 
     protected static function unpaidDebtCount(): int

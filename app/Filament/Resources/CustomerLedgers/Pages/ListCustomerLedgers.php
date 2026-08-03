@@ -15,9 +15,9 @@ class ListCustomerLedgers extends ListRecords
     {
         return [
             CreateAction::make()
-                ->label('New Ledger Entry')
+                ->label(__('New Ledger Entry'))
                 ->icon(Heroicon::OutlinedPlusCircle)
-                ->tooltip('Add a credit or payment entry'),
+                ->tooltip(__('Add a credit or payment entry')),
         ];
     }
 }

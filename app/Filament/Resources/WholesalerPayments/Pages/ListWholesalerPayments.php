@@ -15,9 +15,9 @@ class ListWholesalerPayments extends ListRecords
     {
         return [
             CreateAction::make()
-                ->label('New Payment')
+                ->label(__('New Payment'))
                 ->icon(Heroicon::OutlinedPlusCircle)
-                ->tooltip('Record a payment to a wholesaler'),
+                ->tooltip(__('Record a payment to a wholesaler')),
         ];
     }
 }

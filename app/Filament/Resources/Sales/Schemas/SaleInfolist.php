@@ -15,29 +15,29 @@ class SaleInfolist
     {
         return $schema
             ->components([
-                Section::make('Sale Header')
-                    ->description('Customer, payment, and bill totals.')
+                Section::make(__('Sale Header'))
+                    ->description(__('Customer, payment, and bill totals.'))
                     ->icon(Heroicon::OutlinedDocumentText)
                     ->columnSpanFull()
                     ->columns(3)
                     ->schema([
                         TextEntry::make('user.name')
-                            ->label('Cashier')
+                            ->label(__('Cashier'))
                             ->badge()
                             ->color('gray')
                             ->placeholder('—'),
                         TextEntry::make('customer.name')
-                            ->label('Customer')
+                            ->label(__('Customer'))
                             ->badge()
                             ->color('gray')
-                            ->placeholder('Walk-in'),
+                            ->placeholder(__('Walk-in')),
                         TextEntry::make('payment_status')
-                            ->label('Payment Status')
+                            ->label(__('Payment Status'))
                             ->badge()
                             ->formatStateUsing(fn (?string $state): string => match ($state) {
-                                'cash' => 'Cash',
-                                'credit' => 'Credit',
-                                'partial' => 'Partial',
+                                'cash' => __('Cash'),
+                                'credit' => __('Credit'),
+                                'partial' => __('Partial'),
                                 default => $state ?? '—',
                             })
                             ->color(fn (?string $state): string => match ($state) {
@@ -47,24 +47,24 @@ class SaleInfolist
                                 default => 'gray',
                             }),
                         TextEntry::make('total_amount')
-                            ->label('Grand Total')
+                            ->label(__('Grand Total'))
                             ->formatStateUsing(fn ($state): string => 'AFN '.NumberFormat::trim($state, 2))
                             ->badge()
                             ->color('info'),
                         TextEntry::make('paid_amount')
-                            ->label('Paid Amount')
+                            ->label(__('Paid Amount'))
                             ->formatStateUsing(fn ($state): string => 'AFN '.NumberFormat::trim($state, 2))
                             ->badge()
                             ->color('success'),
                         TextEntry::make('due_amount')
-                            ->label('Due Amount')
+                            ->label(__('Due Amount'))
                             ->formatStateUsing(fn ($state): string => 'AFN '.NumberFormat::trim($state, 2))
                             ->badge()
                             ->color(fn ($state): string => (float) $state > 0 ? 'danger' : 'success'),
                     ]),
 
-                Section::make('Sale Items')
-                    ->description('Products on this invoice.')
+                Section::make(__('Sale Items'))
+                    ->description(__('Products on this invoice.'))
                     ->icon(Heroicon::OutlinedShoppingCart)
                     ->columnSpanFull()
                     ->schema([
@@ -74,37 +74,37 @@ class SaleInfolist
                             ->columns(4)
                             ->schema([
                                 TextEntry::make('product.name')
-                                    ->label('Product')
+                                    ->label(__('Product'))
                                     ->placeholder('—'),
                                 TextEntry::make('quantity')
-                                    ->label('Quantity')
+                                    ->label(__('Quantity'))
                                     ->formatStateUsing(fn ($state): string => NumberFormat::trim($state, 3)),
                                 TextEntry::make('unit_price')
-                                    ->label('Unit Price')
+                                    ->label(__('Unit Price'))
                                     ->formatStateUsing(fn ($state): string => 'AFN '.NumberFormat::trim($state, 2)),
                                 TextEntry::make('subtotal')
-                                    ->label('Subtotal')
+                                    ->label(__('Subtotal'))
                                     ->formatStateUsing(fn ($state): string => 'AFN '.NumberFormat::trim($state, 2))
                                     ->badge()
                                     ->color('success'),
                             ]),
                     ]),
 
-                Section::make('Record Info')
-                    ->description('When this invoice was created and last updated.')
+                Section::make(__('Record Info'))
+                    ->description(__('When this invoice was created and last updated.'))
                     ->icon(Heroicon::OutlinedClock)
                     ->columnSpanFull()
                     ->columns(2)
                     ->collapsed()
                     ->schema([
                         TextEntry::make('created_at')
-                            ->label('Created At')
+                            ->label(__('Created At'))
                             ->since()
                             ->color('info')
                             ->badge()
                             ->placeholder('—'),
                         TextEntry::make('updated_at')
-                            ->label('Last Updated')
+                            ->label(__('Last Updated'))
                             ->since()
                             ->color('warning')
                             ->badge()

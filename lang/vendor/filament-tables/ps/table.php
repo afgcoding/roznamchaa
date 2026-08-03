@@ -28,17 +28,17 @@ return [
 
         'select' => [
 
-            'loading_message' => 'در حال بارگذاری...',
+            'loading_message' => 'بارېږي...',
 
-            'no_options_message' => 'هیچ گزینه‌ای موجود نیست.',
+            'no_options_message' => 'هیڅ اختیار نشته.',
 
-            'no_search_results_message' => 'هیچ گزینه‌ای با جستجوی شما مطابقت ندارد.',
+            'no_search_results_message' => 'ستاسو د لټون سره هیڅ اختیار ونه موندل شو.',
 
-            'placeholder' => 'یک گزینه را انتخاب کنید',
+            'placeholder' => 'یو اختیار وټاکئ',
 
-            'searching_message' => 'درحال جستجو...',
+            'searching_message' => 'لټون روان دی...',
 
-            'search_prompt' => 'برای جستجو تایپ کنید...',
+            'search_prompt' => 'د لټون لپاره ولیکئ...',
 
         ],
 
@@ -70,9 +70,9 @@ return [
         ],
 
         'search' => [
-            'label' => 'جستجو',
-            'placeholder' => 'جستجو',
-            'indicator' => 'جستجو',
+            'label' => 'لټون',
+            'placeholder' => 'لټون',
+            'indicator' => 'لټون',
         ],
 
     ],

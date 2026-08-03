@@ -15,9 +15,9 @@ class ListWholesalers extends ListRecords
     {
         return [
             CreateAction::make()
-                ->label('New Wholesaler')
+                ->label(__('New Wholesaler'))
                 ->icon(Heroicon::OutlinedPlusCircle)
-                ->tooltip('Add a new wholesaler / supplier'),
+                ->tooltip(__('Add a new wholesaler / supplier')),
         ];
     }
 }

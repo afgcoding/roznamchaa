@@ -24,13 +24,13 @@ class WholesalerPaymentsTable
         return $table
             ->columns([
                 TextColumn::make('wholesaler.name')
-                    ->label('Wholesaler')
+                    ->label(__('Wholesaler'))
                     ->searchable()
                     ->sortable()
                     ->badge()
                     ->color('gray'),
                 TextColumn::make('amount')
-                    ->label('Amount Paid')
+                    ->label(__('Amount Paid'))
                     ->formatStateUsing(fn ($state): string => 'AFN '.NumberFormat::trim($state, 2))
                     ->sortable()
                     ->icon(Heroicon::OutlinedBanknotes)
@@ -38,29 +38,29 @@ class WholesalerPaymentsTable
                     ->color('success')
                     ->summarize(
                         Sum::make()
-                            ->label('Total Paid')
+                            ->label(__('Total Paid'))
                             ->money('AFN')
                     ),
                 TextColumn::make('date')
-                    ->label('Payment Date')
+                    ->label(__('Payment Date'))
                     ->date()
                     ->sortable()
                     ->badge()
                     ->color('info'),
                 TextColumn::make('note')
-                    ->label('Note')
+                    ->label(__('Note'))
                     ->limit(40)
                     ->placeholder('—')
                     ->toggleable(),
                 TextColumn::make('created_at')
-                    ->label('Created')
+                    ->label(__('Created'))
                     ->since()
                     ->color('success')
                     ->badge()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')
-                    ->label('Updated')
+                    ->label(__('Updated'))
                     ->since()
                     ->color('warning')
                     ->badge()
@@ -71,26 +71,26 @@ class WholesalerPaymentsTable
             ->filters([
                 SelectFilter::make('wholesaler_id')
                     ->relationship('wholesaler', 'name')
-                    ->label('Wholesaler')
+                    ->label(__('Wholesaler'))
                     ->searchable()
                     ->preload(),
             ])
             ->recordActions([
                 ActionGroup::make([
                     ViewAction::make()
-                        ->label('View')
+                        ->label(__('View'))
                         ->icon(Heroicon::OutlinedEye)
                         ->color('info')
-                        ->tooltip('View payment details'),
+                        ->tooltip(__('View payment details')),
                     EditAction::make()
-                        ->label('Edit')
+                        ->label(__('Edit'))
                         ->icon(Heroicon::OutlinedPencilSquare)
                         ->color('warning')
-                        ->tooltip('Edit this payment'),
+                        ->tooltip(__('Edit this payment')),
                     DeleteAction::make()
-                        ->label('Delete')
+                        ->label(__('Delete'))
                         ->icon(Heroicon::OutlinedTrash)
-                        ->tooltip('Delete this payment')
+                        ->tooltip(__('Delete this payment'))
                         ->before(function ($record): void {
                             WholesalerDebtService::reversePayment($record);
                         }),
@@ -99,7 +99,7 @@ class WholesalerPaymentsTable
             ->toolbarActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make()
-                        ->label('Delete Selected')
+                        ->label(__('Delete Selected'))
                         ->icon(Heroicon::OutlinedTrash)
                         ->before(function (Collection $records): void {
                             $records->each(fn ($payment) => WholesalerDebtService::reversePayment($payment));

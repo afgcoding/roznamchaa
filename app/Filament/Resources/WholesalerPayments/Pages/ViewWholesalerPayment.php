@@ -18,20 +18,20 @@ class ViewWholesalerPayment extends ViewRecord
     {
         return [
             Action::make('back')
-                ->label('Back to List')
+                ->label(__('Back to List'))
                 ->icon(Heroicon::OutlinedArrowLeft)
                 ->url($this->getResource()::getUrl('index'))
                 ->color('gray')
-                ->tooltip('Return to wholesaler payments list'),
+                ->tooltip(__('Return to wholesaler payments list')),
             EditAction::make()
-                ->label('Edit')
+                ->label(__('Edit'))
                 ->icon(Heroicon::OutlinedPencilSquare)
                 ->color('warning')
-                ->tooltip('Edit this payment'),
+                ->tooltip(__('Edit this payment')),
             DeleteAction::make()
-                ->label('Delete')
+                ->label(__('Delete'))
                 ->icon(Heroicon::OutlinedTrash)
-                ->tooltip('Delete this payment')
+                ->tooltip(__('Delete this payment'))
                 ->before(function (): void {
                     WholesalerDebtService::reversePayment($this->record);
                 }),

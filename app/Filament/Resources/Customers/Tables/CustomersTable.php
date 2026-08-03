@@ -22,23 +22,23 @@ class CustomersTable
         return $table
             ->columns([
                 TextColumn::make('name')
-                    ->label('Customer')
+                    ->label(__('Customer'))
                     ->searchable()
                     ->sortable()
                     ->wrap(),
                 TextColumn::make('phone')
-                    ->label('Phone')
+                    ->label(__('Phone'))
                     ->searchable()
                     ->sortable()
                     ->badge()
                     ->color('info'),
                 TextColumn::make('credit_limit')
-                    ->label('Credit Limit')
+                    ->label(__('Credit Limit'))
                     ->formatStateUsing(fn ($state): string => 'AFN '.NumberFormat::trim($state, 2))
                     ->sortable()
                     ->icon(Heroicon::OutlinedBanknotes),
                 TextColumn::make('total_due')
-                    ->label('Total Due')
+                    ->label(__('Total Due'))
                     ->state(fn ($record): float => $record->total_due)
                     ->formatStateUsing(fn ($state): string => 'AFN '.NumberFormat::trim($state, 2))
                     ->badge()
@@ -63,14 +63,14 @@ class CustomersTable
                         ) '.$direction);
                     }),
                 TextColumn::make('created_at')
-                    ->label('Created')
+                    ->label(__('Created'))
                     ->since()
                     ->color('success')
                     ->badge()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')
-                    ->label('Updated')
+                    ->label(__('Updated'))
                     ->since()
                     ->color('warning')
                     ->badge()
@@ -80,34 +80,34 @@ class CustomersTable
             ->defaultSort('name')
             ->filters([
                 Filter::make('with_unpaid_debt')
-                    ->label('Has unpaid qarz')
+                    ->label(__('Has unpaid qarz'))
                     ->query(fn (Builder $query): Builder => $query->withUnpaidDebt()),
                 Filter::make('over_credit_limit')
-                    ->label('Over credit limit')
+                    ->label(__('Over credit limit'))
                     ->query(fn (Builder $query): Builder => $query->overCreditLimit()),
             ])
             ->recordActions([
                 ActionGroup::make([
                     ViewAction::make()
-                        ->label('View')
+                        ->label(__('View'))
                         ->icon(Heroicon::OutlinedEye)
                         ->color('info')
-                        ->tooltip('View customer details'),
+                        ->tooltip(__('View customer details')),
                     EditAction::make()
-                        ->label('Edit')
+                        ->label(__('Edit'))
                         ->icon(Heroicon::OutlinedPencilSquare)
                         ->color('warning')
-                        ->tooltip('Edit this customer'),
+                        ->tooltip(__('Edit this customer')),
                     DeleteAction::make()
-                        ->label('Delete')
+                        ->label(__('Delete'))
                         ->icon(Heroicon::OutlinedTrash)
-                        ->tooltip('Delete this customer'),
+                        ->tooltip(__('Delete this customer')),
                 ]),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make()
-                        ->label('Delete Selected')
+                        ->label(__('Delete Selected'))
                         ->icon(Heroicon::OutlinedTrash),
                 ]),
             ]);

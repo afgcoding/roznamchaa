@@ -23,15 +23,27 @@ class CustomerLedgerResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBookOpen;
 
-    protected static string|UnitEnum|null $navigationGroup = 'Sales & POS';
-
     protected static ?int $navigationSort = 4;
 
-    protected static ?string $navigationLabel = 'Customer Ledgers';
+    public static function getNavigationLabel(): string
+    {
+        return __('Customer Ledgers');
+    }
 
-    protected static ?string $modelLabel = 'Ledger Entry';
+    public static function getNavigationGroup(): string|UnitEnum|null
+    {
+        return __('Sales & POS');
+    }
 
-    protected static ?string $pluralModelLabel = 'Customer Ledgers';
+    public static function getModelLabel(): string
+    {
+        return __('Ledger Entry');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('Customer Ledgers');
+    }
 
     public static function form(Schema $schema): Schema
     {

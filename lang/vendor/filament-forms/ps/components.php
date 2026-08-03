@@ -569,10 +569,10 @@ return [
         'no_merge_tag_search_results_message' => 'هیچ نتیجه‌ای برای جستجوی برچسب ادغام یافت نشد.',
 
         'mentions' => [
-            'no_options_message' => 'هیچ گزینه‌ای موجود نیست.',
-            'no_search_results_message' => 'هیچ نتیجه‌ای با جست‌وجوی شما مطابقت ندارد.',
-            'search_prompt' => 'برای جست‌وجو شروع به تایپ کنید...',
-            'searching_message' => 'در حال جست‌وجو...',
+            'no_options_message' => 'هیڅ اختیار نشته.',
+            'no_search_results_message' => 'ستاسو د لټون سره هیڅ نتیجه ونه موندل شوه.',
+            'search_prompt' => 'د لټون لپاره ولیکئ...',
+            'searching_message' => 'لټون روان دی...',
         ],
 
         'tools' => [
@@ -634,20 +634,20 @@ return [
 
             'create_option' => [
 
-                'label' => 'ایجاد',
+                'label' => 'زیاتول',
 
                 'modal' => [
 
-                    'heading' => 'ایجاد',
+                    'heading' => 'نوی زیاتول',
 
                     'actions' => [
 
                         'create' => [
-                            'label' => 'ایجاد',
+                            'label' => 'ثبتول',
                         ],
 
                         'create_another' => [
-                            'label' => 'ایجاد و ایجاد یکی دیگر',
+                            'label' => 'ثبتول او بل زیاتول',
                         ],
 
                     ],
@@ -658,16 +658,16 @@ return [
 
             'edit_option' => [
 
-                'label' => 'ویرایش',
+                'label' => 'ایډیټ',
 
                 'modal' => [
 
-                    'heading' => 'ویرایش',
+                    'heading' => 'ایډیټ',
 
                     'actions' => [
 
                         'save' => [
-                            'label' => 'ذخیره',
+                            'label' => 'خوندي کول',
                         ],
 
                     ],
@@ -679,23 +679,23 @@ return [
         ],
 
         'boolean' => [
-            'true' => 'بله',
-            'false' => 'خیر',
+            'true' => 'هو',
+            'false' => 'نه',
         ],
 
-        'loading_message' => 'در حال بارگذاری...',
+        'loading_message' => 'بارېږي...',
 
-        'max_items_message' => 'تنها :count مورد می‌تواند انتخاب شود.',
+        'max_items_message' => 'یوازې :count توکي ټاکلی شئ.',
 
-        'no_options_message' => 'هیچ گزینه‌ای موجود نیست.',
+        'no_options_message' => 'هیڅ اختیار نشته.',
 
-        'no_search_results_message' => 'هیچ گزینه‌ای با جستجوی شما مطابقت ندارد.',
+        'no_search_results_message' => 'ستاسو د لټون سره هیڅ اختیار ونه موندل شو.',
 
-        'placeholder' => 'یک گزینه را انتخاب کنید',
+        'placeholder' => 'یو اختیار وټاکئ',
 
-        'searching_message' => 'در حال جستجو...',
+        'searching_message' => 'لټون روان دی...',
 
-        'search_prompt' => 'برای جستجو تایپ کنید...',
+        'search_prompt' => 'د لټون لپاره ولیکئ...',
 
     ],
 
