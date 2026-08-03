@@ -17,20 +17,20 @@ class ViewUnit extends ViewRecord
     {
         return [
             Action::make('back')
-                ->label('Back to List')
+                ->label(__('Back to List'))
                 ->icon(Heroicon::OutlinedArrowLeft)
                 ->url($this->getResource()::getUrl('index'))
                 ->color('gray')
-                ->tooltip('Return to units list'),
+                ->tooltip(__('Return to units list')),
             EditAction::make()
-                ->label('Edit')
+                ->label(__('Edit'))
                 ->icon(Heroicon::OutlinedPencilSquare)
                 ->color('warning')
-                ->tooltip('Edit this unit'),
+                ->tooltip(__('Edit this unit')),
             DeleteAction::make()
-                ->label('Delete')
+                ->label(__('Delete'))
                 ->icon(Heroicon::OutlinedTrash)
-                ->tooltip('Delete this unit'),
+                ->tooltip(__('Delete this unit')),
         ];
     }
 }

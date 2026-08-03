@@ -23,13 +23,29 @@ class ProductResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedCube;
 
-    protected static string|UnitEnum|null $navigationGroup = 'Inventory & Products';
-
     protected static ?int $navigationSort = 3;
 
-    protected static ?string $navigationLabel = 'Products';
-
     protected static ?string $recordTitleAttribute = 'name';
+
+    public static function getNavigationLabel(): string
+    {
+        return __('Products');
+    }
+
+    public static function getNavigationGroup(): string|UnitEnum|null
+    {
+        return __('Inventory & Products');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('Product');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('Products');
+    }
 
     public static function getNavigationBadge(): ?string
     {
@@ -45,7 +61,7 @@ class ProductResource extends Resource
 
     public static function getNavigationBadgeTooltip(): ?string
     {
-        return static::lowStockCount().' product(s) low on stock';
+        return __(':count product(s) low on stock', ['count' => static::lowStockCount()]);
     }
 
     protected static function lowStockCount(): int

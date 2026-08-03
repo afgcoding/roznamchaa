@@ -20,21 +20,21 @@ class ViewProduct extends ViewRecord
     {
         return [
             Action::make('back')
-                ->label('Back to List')
+                ->label(__('Back to List'))
                 ->icon(Heroicon::OutlinedArrowLeft)
                 ->url($this->getResource()::getUrl('index'))
                 ->color('gray')
-                ->tooltip('Return to products list'),
+                ->tooltip(__('Return to products list')),
             EditAction::make()
-                ->label('Edit')
+                ->label(__('Edit'))
                 ->icon(Heroicon::OutlinedPencilSquare)
                 ->color('warning')
-                ->tooltip('Edit this product'),
+                ->tooltip(__('Edit this product')),
             static::protectDeleteAction(
                 DeleteAction::make()
-                    ->label('Delete')
+                    ->label(__('Delete'))
                     ->icon(Heroicon::OutlinedTrash)
-                    ->tooltip('Delete this product')
+                    ->tooltip(__('Delete this product'))
             ),
         ];
     }

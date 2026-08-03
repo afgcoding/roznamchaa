@@ -21,23 +21,26 @@ class CategoriesTable
                 TextColumn::make('name')
                     ->searchable()
                     ->sortable()
-                    ->label('Category'),
+                    ->label(__('Category')),
                 TextColumn::make('description')
+                    ->label(__('Description'))
                     ->limit(40)
                     ->placeholder('—')
                     ->toggleable(),
                 TextColumn::make('products_count')
                     ->counts('products')
-                    ->label('Products')
+                    ->label(__('Products'))
                     ->badge()
                     ->color('info'),
                 TextColumn::make('created_at')
+                    ->label(__('Created'))
                     ->since()
                     ->color('success')
                     ->badge()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')
+                    ->label(__('Updated'))
                     ->since()
                     ->color('warning')
                     ->badge()
@@ -46,27 +49,27 @@ class CategoriesTable
             ])
             ->defaultSort('name')
             ->recordActions([
-               ActionGroup::make([
-                ViewAction::make()
-                    ->label('View')
-                    ->icon(Heroicon::OutlinedEye)
-                    ->color('info')
-                    ->tooltip('View details'),
-                EditAction::make()
-                    ->label('Edit')
-                    ->icon(Heroicon::OutlinedPencilSquare)
-                    ->color('warning')
-                    ->tooltip('Edit category'),
-                DeleteAction::make()
-                    ->label('Delete')
-                    ->icon(Heroicon::OutlinedTrash)
-                    ->tooltip('Delete category')
-               ])
-               ])
+                ActionGroup::make([
+                    ViewAction::make()
+                        ->label(__('View'))
+                        ->icon(Heroicon::OutlinedEye)
+                        ->color('info')
+                        ->tooltip(__('View details')),
+                    EditAction::make()
+                        ->label(__('Edit'))
+                        ->icon(Heroicon::OutlinedPencilSquare)
+                        ->color('warning')
+                        ->tooltip(__('Edit category')),
+                    DeleteAction::make()
+                        ->label(__('Delete'))
+                        ->icon(Heroicon::OutlinedTrash)
+                        ->tooltip(__('Delete category')),
+                ]),
+            ])
             ->toolbarActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make()
-                        ->label('Delete Selected')
+                        ->label(__('Delete Selected'))
                         ->icon(Heroicon::OutlinedTrash),
                 ]),
             ]);

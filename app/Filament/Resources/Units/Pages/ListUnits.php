@@ -15,9 +15,9 @@ class ListUnits extends ListRecords
     {
         return [
             CreateAction::make()
-                ->label('New Unit')
+                ->label(__('New Unit'))
                 ->icon(Heroicon::OutlinedPlusCircle)
-                ->tooltip('Add a new measuring unit'),
+                ->tooltip(__('Add a new measuring unit')),
         ];
     }
 }

@@ -24,22 +24,22 @@ class ProductsTable
         return $table
             ->columns([
                 TextColumn::make('name')
-                    ->label('Product')
+                    ->label(__('Product'))
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('category.name')
-                    ->label('Category')
+                    ->label(__('Category'))
                     ->searchable()
                     ->sortable()
                     ->badge()
                     ->color('info'),
                 TextColumn::make('barcode')
-                    ->label('Barcode')
+                    ->label(__('Barcode'))
                     ->searchable()
                     ->placeholder('—')
                     ->toggleable(),
                 TextColumn::make('purchaseUnit.name')
-                    ->label('Buy Unit')
+                    ->label(__('Buy Unit'))
                     ->formatStateUsing(fn ($state, $record): string => $record->purchaseUnit
                         ? "{$record->purchaseUnit->name} ({$record->purchaseUnit->short_name})"
                         : '—')
@@ -47,7 +47,7 @@ class ProductsTable
                     ->color('gray')
                     ->toggleable(),
                 TextColumn::make('saleUnit.name')
-                    ->label('Sell Unit')
+                    ->label(__('Sell Unit'))
                     ->formatStateUsing(fn ($state, $record): string => $record->saleUnit
                         ? "{$record->saleUnit->name} ({$record->saleUnit->short_name})"
                         : '—')
@@ -55,20 +55,20 @@ class ProductsTable
                     ->color('gray')
                     ->toggleable(),
                 TextColumn::make('cost_price')
-                    ->label('Cost')
+                    ->label(__('Cost'))
                     ->formatStateUsing(fn ($state): string => 'AFN '.NumberFormat::trim($state, 2))
                     ->sortable()
                     ->icon(Heroicon::OutlinedBanknotes)
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('sale_price')
-                    ->label('Sale Price')
+                    ->label(__('Sale Price'))
                     ->formatStateUsing(fn ($state): string => 'AFN '.NumberFormat::trim($state, 2))
                     ->sortable()
                     ->icon(Heroicon::OutlinedBanknotes)
                     ->badge()
                     ->color('warning'),
                 TextColumn::make('stock_quantity')
-                    ->label('Stock')
+                    ->label(__('Stock'))
                     ->formatStateUsing(fn ($state): string => NumberFormat::trim($state, 3))
                     ->sortable()
                     ->badge()
@@ -88,7 +88,7 @@ class ProductsTable
                     }),
 
                 TextColumn::make('purchased_stock_units')
-                    ->label('Purchased Stock Units')
+                    ->label(__('Purchased Stock Units'))
                     ->state(function ($record): ?float {
                         $conversion = (float) $record->unit_conversion;
 
@@ -112,7 +112,7 @@ class ProductsTable
                     ->badge()
                     ->color('gray'),
                 TextColumn::make('min_stock_alert')
-                    ->label('Min Alert')
+                    ->label(__('Min Alert'))
                     ->formatStateUsing(fn ($state): string => NumberFormat::trim($state, 0))
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -133,27 +133,27 @@ class ProductsTable
             ->filters([
                 SelectFilter::make('category_id')
                     ->relationship('category', 'name')
-                    ->label('Category')
+                    ->label(__('Category'))
                     ->searchable()
                     ->preload(),
             ])
             ->recordActions([
                 ActionGroup::make([
                     ViewAction::make()
-                        ->label('View')
+                        ->label(__('View'))
                         ->icon(Heroicon::OutlinedEye)
                         ->color('info')
-                        ->tooltip('View details'),
+                        ->tooltip(__('View details')),
                     EditAction::make()
-                        ->label('Edit')
+                        ->label(__('Edit'))
                         ->icon(Heroicon::OutlinedPencilSquare)
                         ->color('warning')
-                        ->tooltip('Edit product'),
+                        ->tooltip(__('Edit product')),
                     static::protectDeleteAction(
                         DeleteAction::make()
-                            ->label('Delete')
+                            ->label(__('Delete'))
                             ->icon(Heroicon::OutlinedTrash)
-                            ->tooltip('Delete product')
+                            ->tooltip(__('Delete product'))
                     ),
                 ]),
             ])
@@ -161,7 +161,7 @@ class ProductsTable
                 BulkActionGroup::make([
                     static::protectDeleteBulkAction(
                         DeleteBulkAction::make()
-                            ->label('Delete Selected')
+                            ->label(__('Delete Selected'))
                             ->icon(Heroicon::OutlinedTrash)
                     ),
                 ]),

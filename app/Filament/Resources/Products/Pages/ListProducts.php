@@ -15,9 +15,9 @@ class ListProducts extends ListRecords
     {
         return [
             CreateAction::make()
-                ->label('New Product')
+                ->label(__('New Product'))
                 ->icon(Heroicon::OutlinedPlusCircle)
-                ->tooltip('Add a new shop product'),
+                ->tooltip(__('Add a new shop product')),
         ];
     }
 }

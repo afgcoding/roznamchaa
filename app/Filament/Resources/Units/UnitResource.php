@@ -23,13 +23,29 @@ class UnitResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedScale;
 
-    protected static string|UnitEnum|null $navigationGroup = 'Inventory & Products';
-
     protected static ?int $navigationSort = 2;
 
-    protected static ?string $navigationLabel = 'Units';
-
     protected static ?string $recordTitleAttribute = 'name';
+
+    public static function getNavigationLabel(): string
+    {
+        return __('Units');
+    }
+
+    public static function getNavigationGroup(): string|UnitEnum|null
+    {
+        return __('Inventory & Products');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('Unit');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('Units');
+    }
 
     public static function form(Schema $schema): Schema
     {

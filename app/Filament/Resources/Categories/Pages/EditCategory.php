@@ -17,34 +17,34 @@ class EditCategory extends EditRecord
     {
         return [
             Action::make('back')
-                ->label('Back to List')
+                ->label(__('Back to List'))
                 ->icon(Heroicon::OutlinedArrowLeft)
                 ->url($this->getResource()::getUrl('index'))
                 ->color('gray')
-                ->tooltip('Return to categories list'),
+                ->tooltip(__('Return to categories list')),
             ViewAction::make()
-                ->label('View')
+                ->label(__('View'))
                 ->icon(Heroicon::OutlinedEye)
                 ->color('info')
-                ->tooltip('View category details'),
+                ->tooltip(__('View category details')),
             DeleteAction::make()
-                ->label('Delete')
+                ->label(__('Delete'))
                 ->icon(Heroicon::OutlinedTrash)
-                ->tooltip('Delete this category'),
+                ->tooltip(__('Delete this category')),
         ];
     }
 
     protected function getSaveFormAction(): Action
     {
         return parent::getSaveFormAction()
-            ->label('Update Category')
+            ->label(__('Update Category'))
             ->icon(Heroicon::OutlinedCheckCircle);
     }
 
     protected function getCancelFormAction(): Action
     {
         return parent::getCancelFormAction()
-            ->label('Cancel')
+            ->label(__('Cancel'))
             ->icon(Heroicon::OutlinedXMark);
     }
 

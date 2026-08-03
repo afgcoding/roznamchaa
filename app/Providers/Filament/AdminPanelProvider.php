@@ -9,7 +9,9 @@ use App\Filament\Pages\Tenancy\EditStoreProfile;
 use App\Filament\Pages\Tenancy\RegisterStore;
 use App\Filament\Resources\Sales\SaleResource;
 use App\Http\Middleware\EnsureStoreIsActive;
+use App\Http\Middleware\SetLocale;
 use App\Models\Store;
+use Filament\Actions\Action;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -25,6 +27,7 @@ use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
+use Illuminate\Support\Facades\App;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 
 class AdminPanelProvider extends PanelProvider
@@ -80,6 +83,7 @@ class AdminPanelProvider extends PanelProvider
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
                 StartSession::class,
+                SetLocale::class,
                 AuthenticateSession::class,
                 ShareErrorsFromSession::class,
                 PreventRequestForgery::class,
@@ -89,6 +93,20 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
+            ])
+            ->userMenuItems([
+                'locale_en' => Action::make('locale_en')
+                    ->label(fn (): string => (App::getLocale() === 'en' ? '✓ ' : '').__('English'))
+                    ->url(fn (): string => route('locale.switch', ['locale' => 'en']))
+                    ->icon(Heroicon::OutlinedLanguage),
+                'locale_ps' => Action::make('locale_ps')
+                    ->label(fn (): string => (App::getLocale() === 'ps' ? '✓ ' : '').__('Pashto'))
+                    ->url(fn (): string => route('locale.switch', ['locale' => 'ps']))
+                    ->icon(Heroicon::OutlinedLanguage),
+                'locale_fa' => Action::make('locale_fa')
+                    ->label(fn (): string => (App::getLocale() === 'fa' ? '✓ ' : '').__('Dari'))
+                    ->url(fn (): string => route('locale.switch', ['locale' => 'fa']))
+                    ->icon(Heroicon::OutlinedLanguage),
             ]);
     }
 }

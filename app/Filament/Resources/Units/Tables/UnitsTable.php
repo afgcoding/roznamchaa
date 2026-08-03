@@ -19,34 +19,36 @@ class UnitsTable
         return $table
             ->columns([
                 TextColumn::make('name')
-                    ->label('Unit Name')
+                    ->label(__('Unit Name'))
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('short_name')
-                    ->label('Short Name')
+                    ->label(__('Short Name'))
                     ->searchable()
                     ->sortable()
                     ->badge()
                     ->color('gray'),
                 TextColumn::make('purchase_products_count')
                     ->counts('purchaseProducts')
-                    ->label('Purchase Use')
+                    ->label(__('Purchase Use'))
                     ->badge()
                     ->color('info')
-                    ->tooltip('Products that buy with this unit'),
+                    ->tooltip(__('Products that buy with this unit')),
                 TextColumn::make('sale_products_count')
                     ->counts('saleProducts')
-                    ->label('Sale Use')
+                    ->label(__('Sale Use'))
                     ->badge()
                     ->color('success')
-                    ->tooltip('Products that sell with this unit'),
+                    ->tooltip(__('Products that sell with this unit')),
                 TextColumn::make('created_at')
+                    ->label(__('Created'))
                     ->since()
                     ->color('success')
                     ->badge()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')
+                    ->label(__('Updated'))
                     ->since()
                     ->color('warning')
                     ->badge()
@@ -57,25 +59,25 @@ class UnitsTable
             ->recordActions([
                 ActionGroup::make([
                     ViewAction::make()
-                        ->label('View')
+                        ->label(__('View'))
                         ->icon(Heroicon::OutlinedEye)
                         ->color('info')
-                        ->tooltip('View details'),
+                        ->tooltip(__('View details')),
                     EditAction::make()
-                        ->label('Edit')
+                        ->label(__('Edit'))
                         ->icon(Heroicon::OutlinedPencilSquare)
                         ->color('warning')
-                        ->tooltip('Edit unit'),
+                        ->tooltip(__('Edit unit')),
                     DeleteAction::make()
-                        ->label('Delete')
+                        ->label(__('Delete'))
                         ->icon(Heroicon::OutlinedTrash)
-                        ->tooltip('Delete unit'),
+                        ->tooltip(__('Delete unit')),
                 ]),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make()
-                        ->label('Delete Selected')
+                        ->label(__('Delete Selected'))
                         ->icon(Heroicon::OutlinedTrash),
                 ]),
             ]);

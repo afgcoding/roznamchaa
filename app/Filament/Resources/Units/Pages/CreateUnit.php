@@ -15,32 +15,32 @@ class CreateUnit extends CreateRecord
     {
         return [
             Action::make('back')
-                ->label('Back to List')
+                ->label(__('Back to List'))
                 ->icon(Heroicon::OutlinedArrowLeft)
                 ->url($this->getResource()::getUrl('index'))
                 ->color('gray')
-                ->tooltip('Return to units list'),
+                ->tooltip(__('Return to units list')),
         ];
     }
 
     protected function getCreateFormAction(): Action
     {
         return parent::getCreateFormAction()
-            ->label('Save Unit')
+            ->label(__('Save Unit'))
             ->icon(Heroicon::OutlinedCheckCircle);
     }
 
     protected function getCreateAnotherFormAction(): Action
     {
         return parent::getCreateAnotherFormAction()
-            ->label('Save & Add Another')
+            ->label(__('Save & Add Another'))
             ->icon(Heroicon::OutlinedPlus);
     }
 
     protected function getCancelFormAction(): Action
     {
         return parent::getCancelFormAction()
-            ->label('Cancel')
+            ->label(__('Cancel'))
             ->icon(Heroicon::OutlinedXMark);
     }
 

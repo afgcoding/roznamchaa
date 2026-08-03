@@ -13,23 +13,23 @@ class UnitForm
     {
         return $schema
             ->components([
-                Section::make('Unit Details')
-                    ->description('Define how products are measured when buying or selling, like carton, bag, piece, or kilogram.')
+                Section::make(__('Unit Details'))
+                    ->description(__('Define how products are measured when buying or selling, like carton, bag, piece, or kilogram.'))
                     ->icon(Heroicon::OutlinedScale)
                     ->columnSpanFull()
                     ->columns(2)
                     ->schema([
                         TextInput::make('name')
-                            ->label('Unit Name')
-                            ->placeholder('e.g. کارتن، بوجۍ، دانه، کیلو')
-                            ->helperText('Full name of the unit. You can write it in Pashto for shop staff.')
+                            ->label(__('Unit Name'))
+                            ->placeholder(__('e.g. کارتن، بوجۍ، دانه، کیلو'))
+                            ->helperText(__('Full name of the unit. You can write it in Pashto for shop staff.'))
                             ->required()
                             ->maxLength(255)
                             ->autofocus(),
                         TextInput::make('short_name')
-                            ->label('Short Name')
-                            ->placeholder('e.g. ctn, bag, pcs, kg')
-                            ->helperText('Short English code used in bills and reports. Keep it lowercase and simple.')
+                            ->label(__('Short Name'))
+                            ->placeholder(__('e.g. ctn, bag, pcs, kg'))
+                            ->helperText(__('Short English code used in bills and reports. Keep it lowercase and simple.'))
                             ->required()
                             ->maxLength(50)
                             ->scopedUnique(ignoreRecord: true),

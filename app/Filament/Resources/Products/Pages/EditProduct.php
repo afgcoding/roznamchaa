@@ -21,21 +21,21 @@ class EditProduct extends EditRecord
     {
         return [
             Action::make('back')
-                ->label('Back to List')
+                ->label(__('Back to List'))
                 ->icon(Heroicon::OutlinedArrowLeft)
                 ->url($this->getResource()::getUrl('index'))
                 ->color('gray')
-                ->tooltip('Return to products list'),
+                ->tooltip(__('Return to products list')),
             ViewAction::make()
-                ->label('View')
+                ->label(__('View'))
                 ->icon(Heroicon::OutlinedEye)
                 ->color('info')
-                ->tooltip('View product details'),
+                ->tooltip(__('View product details')),
             static::protectDeleteAction(
                 DeleteAction::make()
-                    ->label('Delete')
+                    ->label(__('Delete'))
                     ->icon(Heroicon::OutlinedTrash)
-                    ->tooltip('Delete this product')
+                    ->tooltip(__('Delete this product'))
             ),
         ];
     }
@@ -43,14 +43,14 @@ class EditProduct extends EditRecord
     protected function getSaveFormAction(): Action
     {
         return parent::getSaveFormAction()
-            ->label('Update Product')
+            ->label(__('Update Product'))
             ->icon(Heroicon::OutlinedCheckCircle);
     }
 
     protected function getCancelFormAction(): Action
     {
         return parent::getCancelFormAction()
-            ->label('Cancel')
+            ->label(__('Cancel'))
             ->icon(Heroicon::OutlinedXMark);
     }
 

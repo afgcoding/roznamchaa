@@ -21,8 +21,8 @@ trait ProtectsProductsUsedInSales
                 }
 
                 Notification::make()
-                    ->title('Cannot delete this product')
-                    ->body('This product is used in sales invoices. Deleting it would break bill history.')
+                    ->title(__('Cannot delete this product'))
+                    ->body(__('This product is used in sales invoices. Deleting it would break bill history.'))
                     ->danger()
                     ->send();
 
@@ -43,8 +43,8 @@ trait ProtectsProductsUsedInSales
                 }
 
                 Notification::make()
-                    ->title('Cannot delete selected products')
-                    ->body($blocked->count().' selected product(s) are used in sales invoices and cannot be deleted.')
+                    ->title(__('Cannot delete selected products'))
+                    ->body(__(':count selected product(s) are used in sales invoices and cannot be deleted.', ['count' => $blocked->count()]))
                     ->danger()
                     ->send();
 

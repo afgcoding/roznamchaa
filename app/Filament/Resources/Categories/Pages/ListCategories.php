@@ -15,9 +15,9 @@ class ListCategories extends ListRecords
     {
         return [
             CreateAction::make()
-                ->label('New Category')
+                ->label(__('New Category'))
                 ->icon(Heroicon::OutlinedPlusCircle)
-                ->tooltip('Add a new product category'),
+                ->tooltip(__('Add a new product category')),
         ];
     }
 }

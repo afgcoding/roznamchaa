@@ -17,34 +17,34 @@ class EditUnit extends EditRecord
     {
         return [
             Action::make('back')
-                ->label('Back to List')
+                ->label(__('Back to List'))
                 ->icon(Heroicon::OutlinedArrowLeft)
                 ->url($this->getResource()::getUrl('index'))
                 ->color('gray')
-                ->tooltip('Return to units list'),
+                ->tooltip(__('Return to units list')),
             ViewAction::make()
-                ->label('View')
+                ->label(__('View'))
                 ->icon(Heroicon::OutlinedEye)
                 ->color('info')
-                ->tooltip('View unit details'),
+                ->tooltip(__('View unit details')),
             DeleteAction::make()
-                ->label('Delete')
+                ->label(__('Delete'))
                 ->icon(Heroicon::OutlinedTrash)
-                ->tooltip('Delete this unit'),
+                ->tooltip(__('Delete this unit')),
         ];
     }
 
     protected function getSaveFormAction(): Action
     {
         return parent::getSaveFormAction()
-            ->label('Update Unit')
+            ->label(__('Update Unit'))
             ->icon(Heroicon::OutlinedCheckCircle);
     }
 
     protected function getCancelFormAction(): Action
     {
         return parent::getCancelFormAction()
-            ->label('Cancel')
+            ->label(__('Cancel'))
             ->icon(Heroicon::OutlinedXMark);
     }
 

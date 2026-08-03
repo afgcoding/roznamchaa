@@ -23,13 +23,29 @@ class CategoryResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedTag;
 
-    protected static string|UnitEnum|null $navigationGroup = 'Inventory & Products';
-
     protected static ?int $navigationSort = 1;
 
-    protected static ?string $navigationLabel = 'Categories';
-
     protected static ?string $recordTitleAttribute = 'name';
+
+    public static function getNavigationLabel(): string
+    {
+        return __('Categories');
+    }
+
+    public static function getNavigationGroup(): string|UnitEnum|null
+    {
+        return __('Inventory & Products');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('Category');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('Categories');
+    }
 
     public static function form(Schema $schema): Schema
     {

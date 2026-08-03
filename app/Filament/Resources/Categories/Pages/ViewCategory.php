@@ -17,20 +17,20 @@ class ViewCategory extends ViewRecord
     {
         return [
             Action::make('back')
-                ->label('Back to List')
+                ->label(__('Back to List'))
                 ->icon(Heroicon::OutlinedArrowLeft)
                 ->url($this->getResource()::getUrl('index'))
                 ->color('gray')
-                ->tooltip('Return to categories list'),
+                ->tooltip(__('Return to categories list')),
             EditAction::make()
-                ->label('Edit')
+                ->label(__('Edit'))
                 ->icon(Heroicon::OutlinedPencilSquare)
                 ->color('warning')
-                ->tooltip('Edit this category'),
+                ->tooltip(__('Edit this category')),
             DeleteAction::make()
-                ->label('Delete')
+                ->label(__('Delete'))
                 ->icon(Heroicon::OutlinedTrash)
-                ->tooltip('Delete this category'),
+                ->tooltip(__('Delete this category')),
         ];
     }
 }
