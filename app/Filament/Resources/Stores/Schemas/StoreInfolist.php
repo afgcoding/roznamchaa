@@ -16,52 +16,52 @@ class StoreInfolist
     {
         return $schema
             ->components([
-                Section::make('Store Details')
-                    ->description('Shop identity and activation status.')
+                Section::make(__('Store Details'))
+                    ->description(__('Shop identity and activation status.'))
                     ->icon(Heroicon::OutlinedBuildingStorefront)
                     ->columnSpanFull()
                     ->columns(3)
                     ->schema([
                         TextEntry::make('name')
-                            ->label('Store Name')
+                            ->label(__('Store Name'))
                             ->weight(FontWeight::Bold)
                             ->size(TextSize::Large),
                         TextEntry::make('slug')
-                            ->label('URL Slug')
+                            ->label(__('URL Slug'))
                             ->badge()
                             ->color('gray')
                             ->copyable()
-                            ->copyMessage('Slug copied'),
+                            ->copyMessage(__('Slug copied')),
                         IconEntry::make('is_active')
-                            ->label('Active')
+                            ->label(__('Active'))
                             ->boolean()
                             ->trueIcon(Heroicon::OutlinedCheckCircle)
                             ->falseIcon(Heroicon::OutlinedXCircle)
                             ->trueColor('success')
                             ->falseColor('danger')
-                            ->helperText('Inactive stores are blocked for shop staff.'),
+                            ->helperText(__('Inactive stores are blocked for shop staff.')),
                         TextEntry::make('users_count')
-                            ->label('Users')
+                            ->label(__('Users'))
                             ->state(fn ($record): int => $record->users()->count())
                             ->badge()
                             ->color('info'),
                     ]),
 
-                Section::make('Record Info')
-                    ->description('When this store was created and last updated.')
+                Section::make(__('Record Info'))
+                    ->description(__('When this store was created and last updated.'))
                     ->icon(Heroicon::OutlinedClock)
                     ->columnSpanFull()
                     ->columns(2)
                     ->collapsed()
                     ->schema([
                         TextEntry::make('created_at')
-                            ->label('Created At')
+                            ->label(__('Created At'))
                             ->since()
                             ->color('info')
                             ->badge()
                             ->placeholder('—'),
                         TextEntry::make('updated_at')
-                            ->label('Last Updated')
+                            ->label(__('Last Updated'))
                             ->since()
                             ->color('warning')
                             ->badge()

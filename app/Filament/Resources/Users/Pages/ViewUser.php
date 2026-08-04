@@ -17,20 +17,20 @@ class ViewUser extends ViewRecord
     {
         return [
             Action::make('back')
-                ->label('Back to List')
+                ->label(__('Back to List'))
                 ->icon(Heroicon::OutlinedArrowLeft)
                 ->url($this->getResource()::getUrl('index'))
                 ->color('gray')
-                ->tooltip('Return to users list'),
+                ->tooltip(__('Return to users list')),
             EditAction::make()
-                ->label('Edit')
+                ->label(__('Edit'))
                 ->icon(Heroicon::OutlinedPencilSquare)
                 ->color('warning')
-                ->tooltip('Edit this user'),
+                ->tooltip(__('Edit this user')),
             DeleteAction::make()
-                ->label('Delete')
+                ->label(__('Delete'))
                 ->icon(Heroicon::OutlinedTrash)
-                ->tooltip('Delete this user'),
+                ->tooltip(__('Delete this user')),
         ];
     }
 }

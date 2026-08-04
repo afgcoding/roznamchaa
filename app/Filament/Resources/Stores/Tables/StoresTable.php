@@ -23,12 +23,12 @@ class StoresTable
         return $table
             ->columns([
                 TextColumn::make('name')
-                    ->label('Store')
+                    ->label(__('Store'))
                     ->searchable()
                     ->sortable()
                     ->wrap(),
                 TextColumn::make('slug')
-                    ->label('Slug')
+                    ->label(__('Slug'))
                     ->searchable()
                     ->sortable()
                     ->badge()
@@ -36,35 +36,35 @@ class StoresTable
                     ->copyable(),
                 TextColumn::make('users_count')
                     ->counts('users')
-                    ->label('Users')
+                    ->label(__('Users'))
                     ->badge()
                     ->color('info')
                     ->sortable(),
                 ToggleColumn::make('is_active')
-                    ->label('Active')
+                    ->label(__('Active'))
                     ->onColor('success')
                     ->offColor('danger')
                     ->afterStateUpdated(function (Store $record, mixed $state): void {
                         Notification::make()
-                            ->title($state ? 'Store activated' : 'Store deactivated')
+                            ->title($state ? __('Store activated') : __('Store deactivated'))
                             ->body($state
-                                ? "{$record->name} can access the panel again."
-                                : "{$record->name} is blocked until reactivated.")
+                                ? __(':name can access the panel again.', ['name' => $record->name])
+                                : __(':name is blocked until reactivated.', ['name' => $record->name]))
                             ->color($state ? 'success' : 'danger')
                             ->send();
                     })
                     ->tooltip(fn (Store $record): string => $record->is_active
-                        ? 'Active — click to deactivate'
-                        : 'Inactive — click to activate'),
+                        ? __('Active — click to deactivate')
+                        : __('Inactive — click to activate')),
                 TextColumn::make('created_at')
-                    ->label('Created')
+                    ->label(__('Created'))
                     ->since()
                     ->color('success')
                     ->badge()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')
-                    ->label('Updated')
+                    ->label(__('Updated'))
                     ->since()
                     ->color('warning')
                     ->badge()
@@ -74,33 +74,33 @@ class StoresTable
             ->defaultSort('name')
             ->filters([
                 TernaryFilter::make('is_active')
-                    ->label('Active')
-                    ->placeholder('All stores')
-                    ->trueLabel('Active only')
-                    ->falseLabel('Inactive only'),
+                    ->label(__('Active'))
+                    ->placeholder(__('All stores'))
+                    ->trueLabel(__('Active only'))
+                    ->falseLabel(__('Inactive only')),
             ])
             ->recordActions([
                 ActionGroup::make([
                     ViewAction::make()
-                        ->label('View')
+                        ->label(__('View'))
                         ->icon(Heroicon::OutlinedEye)
                         ->color('info')
-                        ->tooltip('View store details'),
+                        ->tooltip(__('View store details')),
                     EditAction::make()
-                        ->label('Edit')
+                        ->label(__('Edit'))
                         ->icon(Heroicon::OutlinedPencilSquare)
                         ->color('warning')
-                        ->tooltip('Edit this store'),
+                        ->tooltip(__('Edit this store')),
                     DeleteAction::make()
-                        ->label('Delete')
+                        ->label(__('Delete'))
                         ->icon(Heroicon::OutlinedTrash)
-                        ->tooltip('Delete this store'),
+                        ->tooltip(__('Delete this store')),
                 ]),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make()
-                        ->label('Delete Selected')
+                        ->label(__('Delete Selected'))
                         ->icon(Heroicon::OutlinedTrash),
                 ]),
             ]);

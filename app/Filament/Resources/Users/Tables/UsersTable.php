@@ -23,24 +23,24 @@ class UsersTable
         return $table
             ->columns([
                 TextColumn::make('name')
-                    ->label('Name')
+                    ->label(__('Name'))
                     ->searchable()
                     ->sortable()
                     ->wrap(),
                 TextColumn::make('email')
-                    ->label('Email')
+                    ->label(__('Email'))
                     ->searchable()
                     ->sortable()
                     ->icon(Heroicon::OutlinedEnvelope)
                     ->copyable()
-                    ->copyMessage('Email copied'),
+                    ->copyMessage(__('Email copied')),
                 TextColumn::make('role')
-                    ->label('Role')
+                    ->label(__('Role'))
                     ->badge()
                     ->formatStateUsing(fn (?string $state): string => match ($state) {
-                        User::ROLE_SUPER_ADMIN => 'Super Admin',
-                        User::ROLE_ADMIN => 'Admin',
-                        User::ROLE_CASHIER => 'Cashier',
+                        User::ROLE_SUPER_ADMIN => __('Super Admin'),
+                        User::ROLE_ADMIN => __('Admin'),
+                        User::ROLE_CASHIER => __('Cashier'),
                         default => (string) $state,
                     })
                     ->color(fn (?string $state): string => match ($state) {
@@ -51,22 +51,22 @@ class UsersTable
                     })
                     ->sortable(),
                 ToggleColumn::make('is_active')
-                    ->label('Active')
+                    ->label(__('Active'))
                     ->onColor('success')
                     ->offColor('danger')
                     ->disabled(fn (User $record): bool => ! auth()->user()?->can('update', $record))
                     ->tooltip(fn (User $record): string => $record->is_active
-                        ? 'Active — click to deactivate'
-                        : 'Inactive — click to activate'),
+                        ? __('Active — click to deactivate')
+                        : __('Inactive — click to activate')),
                 TextColumn::make('created_at')
-                    ->label('Created')
+                    ->label(__('Created'))
                     ->since()
                     ->color('success')
                     ->badge()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')
-                    ->label('Updated')
+                    ->label(__('Updated'))
                     ->since()
                     ->color('warning')
                     ->badge()
@@ -76,39 +76,39 @@ class UsersTable
             ->defaultSort('created_at', 'desc')
             ->filters([
                 SelectFilter::make('role')
-                    ->label('Role')
+                    ->label(__('Role'))
                     ->options([
-                        User::ROLE_ADMIN => 'Admin',
-                        User::ROLE_CASHIER => 'Cashier',
+                        User::ROLE_ADMIN => __('Admin'),
+                        User::ROLE_CASHIER => __('Cashier'),
                     ]),
                 TernaryFilter::make('is_active')
-                    ->label('Active')
-                    ->placeholder('All users')
-                    ->trueLabel('Active only')
-                    ->falseLabel('Inactive only'),
+                    ->label(__('Active'))
+                    ->placeholder(__('All users'))
+                    ->trueLabel(__('Active only'))
+                    ->falseLabel(__('Inactive only')),
             ])
             ->recordActions([
                 ActionGroup::make([
                     ViewAction::make()
-                        ->label('View')
+                        ->label(__('View'))
                         ->icon(Heroicon::OutlinedEye)
                         ->color('info')
-                        ->tooltip('View user details'),
+                        ->tooltip(__('View user details')),
                     EditAction::make()
-                        ->label('Edit')
+                        ->label(__('Edit'))
                         ->icon(Heroicon::OutlinedPencilSquare)
                         ->color('warning')
-                        ->tooltip('Edit this user'),
+                        ->tooltip(__('Edit this user')),
                     DeleteAction::make()
-                        ->label('Delete')
+                        ->label(__('Delete'))
                         ->icon(Heroicon::OutlinedTrash)
-                        ->tooltip('Delete this user'),
+                        ->tooltip(__('Delete this user')),
                 ]),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make()
-                        ->label('Delete Selected')
+                        ->label(__('Delete Selected'))
                         ->icon(Heroicon::OutlinedTrash),
                 ]),
             ]);

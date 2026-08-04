@@ -37,7 +37,7 @@ class EnsureStoreIsActive
         }
 
         return response()->view('errors.store-deactivated', [
-            'message' => self::MESSAGE,
+            'message' => __(self::MESSAGE),
             'store' => $tenant,
         ], 403);
     }

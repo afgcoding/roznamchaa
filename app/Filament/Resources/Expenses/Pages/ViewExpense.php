@@ -17,20 +17,20 @@ class ViewExpense extends ViewRecord
     {
         return [
             Action::make('back')
-                ->label('Back to List')
+                ->label(__('Back to List'))
                 ->icon(Heroicon::OutlinedArrowLeft)
                 ->url($this->getResource()::getUrl('index'))
                 ->color('gray')
-                ->tooltip('Return to expenses list'),
+                ->tooltip(__('Return to expenses list')),
             EditAction::make()
-                ->label('Edit')
+                ->label(__('Edit'))
                 ->icon(Heroicon::OutlinedPencilSquare)
                 ->color('warning')
-                ->tooltip('Edit this expense'),
+                ->tooltip(__('Edit this expense')),
             DeleteAction::make()
-                ->label('Delete')
+                ->label(__('Delete'))
                 ->icon(Heroicon::OutlinedTrash)
-                ->tooltip('Delete this expense'),
+                ->tooltip(__('Delete this expense')),
         ];
     }
 }

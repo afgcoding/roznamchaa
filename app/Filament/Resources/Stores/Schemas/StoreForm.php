@@ -16,16 +16,16 @@ class StoreForm
     {
         return $schema
             ->components([
-                Section::make('Store Details')
-                    ->description('Manage shop identity and subscription activation.')
+                Section::make(__('Store Details'))
+                    ->description(__('Manage shop identity and subscription activation.'))
                     ->icon(Heroicon::OutlinedBuildingStorefront)
                     ->columnSpanFull()
                     ->columns(2)
                     ->schema([
                         TextInput::make('name')
-                            ->label('Store Name')
-                            ->placeholder('e.g. Ahmad Grocery')
-                            ->helperText('Display name for this shop.')
+                            ->label(__('Store Name'))
+                            ->placeholder(__('e.g. Ahmad Grocery'))
+                            ->helperText(__('Display name for this shop.'))
                             ->required()
                             ->maxLength(255)
                             ->autofocus()
@@ -38,17 +38,17 @@ class StoreForm
                                 $set('slug', Store::uniqueSlugFor((string) $state));
                             }),
                         TextInput::make('slug')
-                            ->label('URL Slug')
-                            ->placeholder('e.g. ahmad-grocery')
-                            ->helperText('Used in /admin/{slug}. Must be unique.')
+                            ->label(__('URL Slug'))
+                            ->placeholder(__('e.g. ahmad-grocery'))
+                            ->helperText(__('Used in /admin/{slug}. Must be unique.'))
                             ->required()
                             ->maxLength(255)
                             ->unique(ignoreRecord: true)
                             ->alphaDash()
                             ->dehydrateStateUsing(fn (?string $state): string => Str::slug((string) $state)),
                         Toggle::make('is_active')
-                            ->label('Store Active')
-                            ->helperText('When off, store admins and cashiers cannot open this store panel.')
+                            ->label(__('Store Active'))
+                            ->helperText(__('When off, store admins and cashiers cannot open this store panel.'))
                             ->onColor('success')
                             ->offColor('danger')
                             ->onIcon(Heroicon::Check)

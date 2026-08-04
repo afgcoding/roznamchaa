@@ -23,13 +23,29 @@ class ExpenseResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedReceiptPercent;
 
-    protected static string|UnitEnum|null $navigationGroup = 'Finance & Ledger';
-
     protected static ?int $navigationSort = 3;
 
-    protected static ?string $navigationLabel = 'Expenses';
-
     protected static ?string $recordTitleAttribute = 'title';
+
+    public static function getNavigationLabel(): string
+    {
+        return __('Expenses');
+    }
+
+    public static function getNavigationGroup(): string|UnitEnum|null
+    {
+        return __('Finance & Ledger');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('Expense');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('Expenses');
+    }
 
     public static function form(Schema $schema): Schema
     {

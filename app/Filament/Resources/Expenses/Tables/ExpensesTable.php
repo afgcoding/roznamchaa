@@ -23,12 +23,12 @@ class ExpensesTable
         return $table
             ->columns([
                 TextColumn::make('title')
-                    ->label('Expense')
+                    ->label(__('Expense'))
                     ->searchable()
                     ->sortable()
                     ->wrap(),
                 TextColumn::make('amount')
-                    ->label('Amount')
+                    ->label(__('Amount'))
                     ->formatStateUsing(fn ($state): string => 'AFN '.NumberFormat::trim($state, 2))
                     ->sortable()
                     ->icon(Heroicon::OutlinedBanknotes)
@@ -36,29 +36,29 @@ class ExpensesTable
                     ->color('danger')
                     ->summarize(
                         Sum::make()
-                            ->label('Total Spent')
+                            ->label(__('Total Expenses'))
                             ->money('AFN')
                     ),
                 TextColumn::make('date')
-                    ->label('Expense Date')
+                    ->label(__('Expense Date'))
                     ->date()
                     ->sortable()
                     ->badge()
                     ->color('info'),
                 TextColumn::make('description')
-                    ->label('Description')
+                    ->label(__('Description'))
                     ->limit(40)
                     ->placeholder('—')
                     ->toggleable(),
                 TextColumn::make('created_at')
-                    ->label('Created')
+                    ->label(__('Created'))
                     ->since()
                     ->color('success')
                     ->badge()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')
-                    ->label('Updated')
+                    ->label(__('Updated'))
                     ->since()
                     ->color('warning')
                     ->badge()
@@ -68,10 +68,10 @@ class ExpensesTable
             ->defaultSort('created_at', 'desc')
             ->filters([
                 Filter::make('today')
-                    ->label('Today')
+                    ->label(__('Today'))
                     ->query(fn (Builder $query): Builder => $query->whereDate('date', now()->toDateString())),
                 Filter::make('this_month')
-                    ->label('This month')
+                    ->label(__('This month'))
                     ->query(fn (Builder $query): Builder => $query
                         ->whereMonth('date', now()->month)
                         ->whereYear('date', now()->year)),
@@ -79,25 +79,25 @@ class ExpensesTable
             ->recordActions([
                 ActionGroup::make([
                     ViewAction::make()
-                        ->label('View')
+                        ->label(__('View'))
                         ->icon(Heroicon::OutlinedEye)
                         ->color('info')
-                        ->tooltip('View expense details'),
+                        ->tooltip(__('View expense details')),
                     EditAction::make()
-                        ->label('Edit')
+                        ->label(__('Edit'))
                         ->icon(Heroicon::OutlinedPencilSquare)
                         ->color('warning')
-                        ->tooltip('Edit this expense'),
+                        ->tooltip(__('Edit this expense')),
                     DeleteAction::make()
-                        ->label('Delete')
+                        ->label(__('Delete'))
                         ->icon(Heroicon::OutlinedTrash)
-                        ->tooltip('Delete this expense'),
+                        ->tooltip(__('Delete this expense')),
                 ]),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make()
-                        ->label('Delete Selected')
+                        ->label(__('Delete Selected'))
                         ->icon(Heroicon::OutlinedTrash),
                 ]),
             ]);

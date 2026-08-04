@@ -15,9 +15,9 @@ class ListStores extends ListRecords
     {
         return [
             CreateAction::make()
-                ->label('New Store')
+                ->label(__('New Store'))
                 ->icon(Heroicon::OutlinedPlusCircle)
-                ->tooltip('Add a new store / tenant'),
+                ->tooltip(__('Add a new store / tenant')),
         ];
     }
 }

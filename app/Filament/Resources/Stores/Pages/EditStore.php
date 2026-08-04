@@ -17,34 +17,34 @@ class EditStore extends EditRecord
     {
         return [
             Action::make('back')
-                ->label('Back to List')
+                ->label(__('Back to List'))
                 ->icon(Heroicon::OutlinedArrowLeft)
                 ->url($this->getResource()::getUrl('index'))
                 ->color('gray')
-                ->tooltip('Return to stores list'),
+                ->tooltip(__('Return to stores list')),
             ViewAction::make()
-                ->label('View')
+                ->label(__('View'))
                 ->icon(Heroicon::OutlinedEye)
                 ->color('info')
-                ->tooltip('View store details'),
+                ->tooltip(__('View store details')),
             DeleteAction::make()
-                ->label('Delete')
+                ->label(__('Delete'))
                 ->icon(Heroicon::OutlinedTrash)
-                ->tooltip('Delete this store'),
+                ->tooltip(__('Delete this store')),
         ];
     }
 
     protected function getSaveFormAction(): Action
     {
         return parent::getSaveFormAction()
-            ->label('Update Store')
+            ->label(__('Update Store'))
             ->icon(Heroicon::OutlinedCheckCircle);
     }
 
     protected function getCancelFormAction(): Action
     {
         return parent::getCancelFormAction()
-            ->label('Cancel')
+            ->label(__('Cancel'))
             ->icon(Heroicon::OutlinedXMark);
     }
 

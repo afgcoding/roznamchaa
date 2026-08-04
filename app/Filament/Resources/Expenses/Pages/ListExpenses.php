@@ -15,9 +15,9 @@ class ListExpenses extends ListRecords
     {
         return [
             CreateAction::make()
-                ->label('New Expense')
+                ->label(__('New Expense'))
                 ->icon(Heroicon::OutlinedPlusCircle)
-                ->tooltip('Add a new shop expense'),
+                ->tooltip(__('Add a new shop expense')),
         ];
     }
 }

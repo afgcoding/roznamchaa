@@ -28,13 +28,29 @@ class UserResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedUsers;
 
-    protected static string|UnitEnum|null $navigationGroup = 'System Settings';
-
     protected static ?int $navigationSort = 1;
 
-    protected static ?string $navigationLabel = 'Users & Roles';
-
     protected static ?string $recordTitleAttribute = 'name';
+
+    public static function getNavigationLabel(): string
+    {
+        return __('Users & Roles');
+    }
+
+    public static function getNavigationGroup(): string|UnitEnum|null
+    {
+        return __('System Settings');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('User');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('Users');
+    }
 
     public static function form(Schema $schema): Schema
     {

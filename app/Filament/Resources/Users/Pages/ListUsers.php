@@ -15,9 +15,9 @@ class ListUsers extends ListRecords
     {
         return [
             CreateAction::make()
-                ->label('New User')
+                ->label(__('New User'))
                 ->icon(Heroicon::OutlinedPlusCircle)
-                ->tooltip('Add a new admin or cashier'),
+                ->tooltip(__('Add a new admin or cashier')),
         ];
     }
 }

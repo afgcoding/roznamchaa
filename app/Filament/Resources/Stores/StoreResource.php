@@ -28,17 +28,29 @@ class StoreResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBuildingStorefront;
 
-    protected static string|UnitEnum|null $navigationGroup = 'System Settings';
-
     protected static ?int $navigationSort = 0;
 
-    protected static ?string $navigationLabel = 'Stores';
-
-    protected static ?string $modelLabel = 'Store';
-
-    protected static ?string $pluralModelLabel = 'Stores';
-
     protected static ?string $recordTitleAttribute = 'name';
+
+    public static function getNavigationLabel(): string
+    {
+        return __('Stores');
+    }
+
+    public static function getNavigationGroup(): string|UnitEnum|null
+    {
+        return __('System Settings');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('Store');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('Stores');
+    }
 
     public static function canAccess(): bool
     {

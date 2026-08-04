@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Store Deactivated</title>
+    <title>{{ __('Store deactivated') }}</title>
     <style>
         :root {
             color-scheme: light;
@@ -94,15 +94,15 @@
 </head>
 <body>
     <main class="card">
-        <div class="eyebrow">Account suspended</div>
-        <h1>Store deactivated</h1>
+        <div class="eyebrow">{{ __('Account suspended') }}</div>
+        <h1>{{ __('Store deactivated') }}</h1>
         <p>{{ $message }}</p>
         @if (! empty($store?->name))
-            <p style="margin-top: 0.75rem;">Store: <strong>{{ $store->name }}</strong></p>
+            <p style="margin-top: 0.75rem;">{{ __('Store') }}: <strong>{{ $store->name }}</strong></p>
         @endif
         <div class="actions">
-            <a class="primary" href="{{ url('/admin/login') }}">Back to login</a>
-            <a class="secondary" href="mailto:support@example.com">Contact support</a>
+            <a class="primary" href="{{ url('/admin/login') }}">{{ __('Back to login') }}</a>
+            <a class="secondary" href="mailto:support@example.com">{{ __('Contact support') }}</a>
         </div>
     </main>
 </body>

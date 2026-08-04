@@ -16,47 +16,47 @@ class ExpenseInfolist
     {
         return $schema
             ->components([
-                Section::make('Expense Details')
-                    ->description('Shop expense information.')
+                Section::make(__('Expense Details'))
+                    ->description(__('Shop expense information.'))
                     ->icon(Heroicon::OutlinedReceiptPercent)
                     ->columnSpanFull()
                     ->columns(3)
                     ->schema([
                         TextEntry::make('title')
-                            ->label('Expense Title')
+                            ->label(__('Expense Title'))
                             ->weight(FontWeight::Bold)
                             ->size(TextSize::Large),
                         TextEntry::make('amount')
-                            ->label('Amount')
+                            ->label(__('Amount'))
                             ->formatStateUsing(fn ($state): string => 'AFN '.NumberFormat::trim($state, 2))
                             ->badge()
                             ->color('danger'),
                         TextEntry::make('date')
-                            ->label('Expense Date')
+                            ->label(__('Expense Date'))
                             ->date()
                             ->badge()
                             ->color('info'),
                         TextEntry::make('description')
-                            ->label('Description')
-                            ->placeholder('No description')
+                            ->label(__('Description'))
+                            ->placeholder(__('No description'))
                             ->columnSpanFull(),
                     ]),
 
-                Section::make('Record Info')
-                    ->description('When this expense was created and last updated.')
+                Section::make(__('Record Info'))
+                    ->description(__('When this expense was created and last updated.'))
                     ->icon(Heroicon::OutlinedClock)
                     ->columnSpanFull()
                     ->columns(2)
                     ->collapsed()
                     ->schema([
                         TextEntry::make('created_at')
-                            ->label('Created At')
+                            ->label(__('Created At'))
                             ->since()
                             ->color('info')
                             ->badge()
                             ->placeholder('—'),
                         TextEntry::make('updated_at')
-                            ->label('Last Updated')
+                            ->label(__('Last Updated'))
                             ->since()
                             ->color('warning')
                             ->badge()
