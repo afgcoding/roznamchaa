@@ -2,7 +2,9 @@
 
 namespace App\Filament\Resources\Customers\Schemas;
 
+use App\Enums\StoreFeature;
 use App\Support\NumberFormat;
+use App\Support\StoreFeatures;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
@@ -15,7 +17,9 @@ class CustomerForm
         return $schema
             ->components([
                 Section::make(__('Customer Details'))
-                    ->description(__('Basic info and credit limit for this customer.'))
+                    ->description(StoreFeatures::enabled(StoreFeature::CreditLimit)
+                        ? __('Basic info and credit limit for this customer.')
+                        : __('Basic info for this customer.'))
                     ->icon(Heroicon::OutlinedUser)
                     ->columnSpanFull()
                     ->columns(2)
@@ -49,13 +53,15 @@ class CustomerForm
                 ->label(__('Credit Limit'))
                 ->placeholder(__('e.g. 5000'))
                 ->helperText(__('Maximum qarz this customer is allowed. Use 0 for cash-only.'))
-                ->required()
+                ->required(fn (): bool => StoreFeatures::enabled(StoreFeature::CreditLimit))
                 ->numeric()
                 ->default(0)
                 ->prefix('AFN')
                 ->minValue(0)
                 ->formatStateUsing(fn ($state) => $state === null || $state === '' ? $state : NumberFormat::trim($state, 2))
-                ->columnSpanFull(),
+                ->columnSpanFull()
+                ->visible(fn (): bool => StoreFeatures::enabled(StoreFeature::CreditLimit))
+                ->dehydrated(fn (): bool => StoreFeatures::enabled(StoreFeature::CreditLimit)),
         ];
     }
 }

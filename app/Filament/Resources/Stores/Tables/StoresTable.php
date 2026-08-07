@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Stores\Tables;
 
+use App\Enums\StorePlanType;
 use App\Models\Store;
 use Filament\Actions\ActionGroup;
 use Filament\Actions\BulkActionGroup;
@@ -13,6 +14,7 @@ use Filament\Notifications\Notification;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
 
@@ -34,6 +36,18 @@ class StoresTable
                     ->badge()
                     ->color('gray')
                     ->copyable(),
+                TextColumn::make('plan_type')
+                    ->label(__('Plan'))
+                    ->formatStateUsing(fn ($state): string => $state instanceof StorePlanType
+                        ? $state->label()
+                        : (StorePlanType::tryFrom((string) $state)?->label() ?? __('Grocery')))
+                    ->badge()
+                    ->color(fn ($state): string => match ($state instanceof StorePlanType ? $state->value : $state) {
+                        'wholesale' => 'info',
+                        'supermarket' => 'success',
+                        default => 'gray',
+                    })
+                    ->sortable(),
                 TextColumn::make('users_count')
                     ->counts('users')
                     ->label(__('Users'))
@@ -73,6 +87,9 @@ class StoresTable
             ])
             ->defaultSort('name')
             ->filters([
+                SelectFilter::make('plan_type')
+                    ->label(__('Plan'))
+                    ->options(StorePlanType::options()),
                 TernaryFilter::make('is_active')
                     ->label(__('Active'))
                     ->placeholder(__('All stores'))

@@ -40,14 +40,28 @@ class Customer extends Model
     }
 
     /**
-     * Remaining unpaid credit (qarz): credits - payments.
+     * Live unpaid balance (all plans):
+     * open invoice dues + standalone credits − standalone payments.
+     *
+     * Sale-linked ledger credits are excluded so they are not double-counted
+     * with sales.due_amount (those rows are kept for ledger history).
+     * Sale-linked payments are also excluded because they already reduce sales.due_amount.
      */
     public function getTotalDueAttribute(): float
     {
-        $credits = (float) $this->ledgers()->where('type', 'credit')->sum('amount');
-        $payments = (float) $this->ledgers()->where('type', 'payment')->sum('amount');
+        $invoiceDue = (float) $this->sales()->sum('due_amount');
 
-        return max(0, $credits - $payments);
+        $standaloneCredits = (float) $this->ledgers()
+            ->where('type', 'credit')
+            ->whereNull('sale_id')
+            ->sum('amount');
+
+        $standalonePayments = (float) $this->ledgers()
+            ->where('type', 'payment')
+            ->whereNull('sale_id')
+            ->sum('amount');
+
+        return max(0, round($invoiceDue + $standaloneCredits - $standalonePayments, 2));
     }
 
     /**
@@ -55,7 +69,7 @@ class Customer extends Model
      */
     public function scopeWithUnpaidDebt(Builder $query): Builder
     {
-        return $query->whereRaw($this->totalDueSql().' > 0');
+        return $query->whereRaw(static::totalDueSql().' > 0');
     }
 
     /**
@@ -63,14 +77,28 @@ class Customer extends Model
      */
     public function scopeOverCreditLimit(Builder $query): Builder
     {
-        return $query->whereRaw($this->totalDueSql().' > customers.credit_limit');
+        return $query->whereRaw(static::totalDueSql().' > customers.credit_limit');
     }
 
-    protected function totalDueSql(): string
+    public static function totalDueSql(): string
     {
         return '(
-            COALESCE((SELECT SUM(amount) FROM customer_ledgers WHERE customer_id = customers.id AND type = \'credit\'), 0)
-            - COALESCE((SELECT SUM(amount) FROM customer_ledgers WHERE customer_id = customers.id AND type = \'payment\'), 0)
+            COALESCE((
+                SELECT SUM(due_amount) FROM sales
+                WHERE sales.customer_id = customers.id
+            ), 0)
+            + COALESCE((
+                SELECT SUM(amount) FROM customer_ledgers
+                WHERE customer_ledgers.customer_id = customers.id
+                  AND customer_ledgers.type = \'credit\'
+                  AND customer_ledgers.sale_id IS NULL
+            ), 0)
+            - COALESCE((
+                SELECT SUM(amount) FROM customer_ledgers
+                WHERE customer_ledgers.customer_id = customers.id
+                  AND customer_ledgers.type = \'payment\'
+                  AND customer_ledgers.sale_id IS NULL
+            ), 0)
         )';
     }
 }

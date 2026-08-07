@@ -2,7 +2,9 @@
 
 namespace App\Filament\Resources\Customers\Schemas;
 
+use App\Enums\StoreFeature;
 use App\Support\NumberFormat;
+use App\Support\StoreFeatures;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
@@ -43,7 +45,8 @@ class CustomerInfolist
                             ->label(__('Credit Limit'))
                             ->formatStateUsing(fn ($state): string => 'AFN '.NumberFormat::trim($state, 2))
                             ->badge()
-                            ->color('gray'),
+                            ->color('gray')
+                            ->visible(fn (): bool => StoreFeatures::enabled(StoreFeature::CreditLimit)),
                         TextEntry::make('total_due')
                             ->label(__('Total Due (Qarz)'))
                             ->state(fn ($record): float => $record->total_due)
@@ -57,7 +60,11 @@ class CustomerInfolist
                                     return 'success';
                                 }
 
-                                if ($limit > 0 && $due > $limit) {
+                                if (
+                                    StoreFeatures::enabled(StoreFeature::CreditLimit)
+                                    && $limit > 0
+                                    && $due > $limit
+                                ) {
                                     return 'danger';
                                 }
 

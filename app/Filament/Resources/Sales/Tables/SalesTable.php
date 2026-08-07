@@ -2,9 +2,11 @@
 
 namespace App\Filament\Resources\Sales\Tables;
 
+use App\Enums\StoreFeature;
 use App\Models\Sale;
 use App\Services\SaleStockService;
 use App\Support\NumberFormat;
+use App\Support\StoreFeatures;
 use Filament\Actions\ActionGroup;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
@@ -51,7 +53,8 @@ class SalesTable
                     ->label(__('Discount'))
                     ->formatStateUsing(fn ($state): string => 'AFN '.NumberFormat::trim($state, 2))
                     ->sortable()
-                    ->icon(Heroicon::OutlinedBanknotes),
+                    ->icon(Heroicon::OutlinedBanknotes)
+                    ->visible(fn (): bool => StoreFeatures::enabled(StoreFeature::DiscountEngine)),
                 TextColumn::make('payable_amount')
                     ->label(__('Payable Amount'))
                     ->formatStateUsing(fn ($state): string => 'AFN '.NumberFormat::trim($state, 2))

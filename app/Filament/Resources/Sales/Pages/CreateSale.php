@@ -2,8 +2,10 @@
 
 namespace App\Filament\Resources\Sales\Pages;
 
+use App\Enums\StoreFeature;
 use App\Filament\Resources\Sales\SaleResource;
 use App\Services\SaleStockService;
+use App\Support\StoreFeatures;
 use Filament\Actions\Action;
 use Filament\Resources\Pages\CreateRecord;
 use Filament\Support\Icons\Heroicon;
@@ -43,6 +45,20 @@ class CreateSale extends CreateRecord
         return parent::getCancelFormAction()
             ->label(__('Cancel'))
             ->icon(Heroicon::OutlinedXMark);
+    }
+
+    /**
+     * @param  array<string, mixed>  $data
+     * @return array<string, mixed>
+     */
+    protected function mutateFormDataBeforeCreate(array $data): array
+    {
+        if (! StoreFeatures::enabled(StoreFeature::DiscountEngine)) {
+            $data['discount'] = 0;
+            $data['payable_amount'] = $data['total_amount'] ?? $data['payable_amount'] ?? 0;
+        }
+
+        return $data;
     }
 
     protected function afterCreate(): void

@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Customers;
 
+use App\Enums\StoreFeature;
 use App\Filament\Resources\Customers\Pages\CreateCustomer;
 use App\Filament\Resources\Customers\Pages\EditCustomer;
 use App\Filament\Resources\Customers\Pages\ListCustomers;
@@ -10,6 +11,7 @@ use App\Filament\Resources\Customers\Schemas\CustomerForm;
 use App\Filament\Resources\Customers\Schemas\CustomerInfolist;
 use App\Filament\Resources\Customers\Tables\CustomersTable;
 use App\Models\Customer;
+use App\Support\StoreFeatures;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
@@ -56,15 +58,24 @@ class CustomerResource extends Resource
 
     public static function getNavigationBadgeColor(): string|array|null
     {
-        return static::overCreditLimitCount() > 0 ? 'danger' : 'warning';
+        if (
+            StoreFeatures::enabled(StoreFeature::CreditLimit)
+            && static::overCreditLimitCount() > 0
+        ) {
+            return 'danger';
+        }
+
+        return 'warning';
     }
 
     public static function getNavigationBadgeTooltip(): ?string
     {
-        $overLimit = static::overCreditLimitCount();
+        if (StoreFeatures::enabled(StoreFeature::CreditLimit)) {
+            $overLimit = static::overCreditLimitCount();
 
-        if ($overLimit > 0) {
-            return __(':count customer(s) over credit limit (qarz)', ['count' => $overLimit]);
+            if ($overLimit > 0) {
+                return __(':count customer(s) over credit limit (qarz)', ['count' => $overLimit]);
+            }
         }
 
         return __(':count customer(s) with unpaid credit (qarz)', ['count' => static::unpaidDebtCount()]);
@@ -77,6 +88,10 @@ class CustomerResource extends Resource
 
     protected static function overCreditLimitCount(): int
     {
+        if (! StoreFeatures::enabled(StoreFeature::CreditLimit)) {
+            return 0;
+        }
+
         return static::getModel()::query()->overCreditLimit()->count();
     }
 

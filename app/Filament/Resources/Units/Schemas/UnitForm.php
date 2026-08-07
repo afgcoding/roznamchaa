@@ -18,22 +18,32 @@ class UnitForm
                     ->icon(Heroicon::OutlinedScale)
                     ->columnSpanFull()
                     ->columns(2)
-                    ->schema([
-                        TextInput::make('name')
-                            ->label(__('Unit Name'))
-                            ->placeholder(__('e.g. کارتن، بوجۍ، دانه، کیلو'))
-                            ->helperText(__('Full name of the unit. You can write it in Pashto for shop staff.'))
-                            ->required()
-                            ->maxLength(255)
-                            ->autofocus(),
-                        TextInput::make('short_name')
-                            ->label(__('Short Name'))
-                            ->placeholder(__('e.g. ctn, bag, pcs, kg'))
-                            ->helperText(__('Short English code used in bills and reports. Keep it lowercase and simple.'))
-                            ->required()
-                            ->maxLength(50)
-                            ->scopedUnique(ignoreRecord: true),
-                    ]),
+                    ->schema(static::components()),
             ]);
+    }
+
+    /**
+     * Unit fields — reused by UnitResource and ProductForm create-option modals.
+     *
+     * @return array<int, TextInput>
+     */
+    public static function components(): array
+    {
+        return [
+            TextInput::make('name')
+                ->label(__('Unit Name'))
+                ->placeholder(__('e.g. کارتن، بوجۍ، دانه، کیلو'))
+                ->helperText(__('Full name of the unit. You can write it in Pashto for shop staff.'))
+                ->required()
+                ->maxLength(255)
+                ->autofocus(),
+            TextInput::make('short_name')
+                ->label(__('Short Name'))
+                ->placeholder(__('e.g. ctn, bag, pcs, kg'))
+                ->helperText(__('Short English code used in bills and reports. Keep it lowercase and simple.'))
+                ->required()
+                ->maxLength(50)
+                ->scopedUnique(ignoreRecord: true),
+        ];
     }
 }

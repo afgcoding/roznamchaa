@@ -2,7 +2,10 @@
 
 namespace App\Filament\Resources\Customers\Tables;
 
+use App\Enums\StoreFeature;
+use App\Models\Customer;
 use App\Support\NumberFormat;
+use App\Support\StoreFeatures;
 use Filament\Actions\ActionGroup;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
@@ -36,7 +39,8 @@ class CustomersTable
                     ->label(__('Credit Limit'))
                     ->formatStateUsing(fn ($state): string => 'AFN '.NumberFormat::trim($state, 2))
                     ->sortable()
-                    ->icon(Heroicon::OutlinedBanknotes),
+                    ->icon(Heroicon::OutlinedBanknotes)
+                    ->visible(fn (): bool => StoreFeatures::enabled(StoreFeature::CreditLimit)),
                 TextColumn::make('total_due')
                     ->label(__('Total Due'))
                     ->state(fn ($record): float => $record->total_due)
@@ -50,17 +54,20 @@ class CustomersTable
                             return 'success';
                         }
 
-                        if ($limit > 0 && $due > $limit) {
+                        if (
+                            StoreFeatures::enabled(StoreFeature::CreditLimit)
+                            && $limit > 0
+                            && $due > $limit
+                        ) {
                             return 'danger';
                         }
 
                         return 'warning';
                     })
                     ->sortable(query: function (Builder $query, string $direction): Builder {
-                        return $query->orderByRaw('(
-                            COALESCE((SELECT SUM(amount) FROM customer_ledgers WHERE customer_id = customers.id AND type = \'credit\'), 0)
-                            - COALESCE((SELECT SUM(amount) FROM customer_ledgers WHERE customer_id = customers.id AND type = \'payment\'), 0)
-                        ) '.$direction);
+                        $direction = strtolower($direction) === 'desc' ? 'desc' : 'asc';
+
+                        return $query->orderByRaw(Customer::totalDueSql().' '.$direction);
                     }),
                 TextColumn::make('created_at')
                     ->label(__('Created'))
@@ -84,7 +91,8 @@ class CustomersTable
                     ->query(fn (Builder $query): Builder => $query->withUnpaidDebt()),
                 Filter::make('over_credit_limit')
                     ->label(__('Over credit limit'))
-                    ->query(fn (Builder $query): Builder => $query->overCreditLimit()),
+                    ->query(fn (Builder $query): Builder => $query->overCreditLimit())
+                    ->visible(fn (): bool => StoreFeatures::enabled(StoreFeature::CreditLimit)),
             ])
             ->recordActions([
                 ActionGroup::make([

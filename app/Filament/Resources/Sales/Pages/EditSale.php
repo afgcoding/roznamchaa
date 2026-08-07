@@ -2,9 +2,11 @@
 
 namespace App\Filament\Resources\Sales\Pages;
 
+use App\Enums\StoreFeature;
 use App\Filament\Resources\Sales\SaleResource;
 use App\Services\SaleStockService;
 use App\Support\NumberFormat;
+use App\Support\StoreFeatures;
 use Filament\Actions\Action;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\ViewAction;
@@ -76,6 +78,20 @@ class EditSale extends EditRecord
             if (array_key_exists($field, $data) && $data[$field] !== null && $data[$field] !== '') {
                 $data[$field] = NumberFormat::trim($data[$field], 2);
             }
+        }
+
+        return $data;
+    }
+
+    /**
+     * @param  array<string, mixed>  $data
+     * @return array<string, mixed>
+     */
+    protected function mutateFormDataBeforeSave(array $data): array
+    {
+        if (! StoreFeatures::enabled(StoreFeature::DiscountEngine)) {
+            $data['discount'] = 0;
+            $data['payable_amount'] = $data['total_amount'] ?? $data['payable_amount'] ?? 0;
         }
 
         return $data;

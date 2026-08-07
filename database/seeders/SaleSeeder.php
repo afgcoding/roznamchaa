@@ -80,14 +80,7 @@ class SaleSeeder extends Seeder
             'subtotal' => 420.00,
         ]);
 
-        CustomerLedger::query()->create([
-            'customer_id' => $customer1->id,
-            'sale_id' => $creditSale->id,
-            'type' => 'credit',
-            'amount' => 400.00,
-            'date' => now()->toDateString(),
-            'description' => 'د بل نمبر '.$creditSale->id.' پور',
-        ]);
+        // Sale model auto-syncs a credit ledger from due_amount.
 
         // ۳) جزوي تادیه
         $partialSale = Sale::query()->create([
@@ -108,15 +101,6 @@ class SaleSeeder extends Seeder
             'unit_price' => 85.00,
             'cost_price' => 70.00,
             'subtotal' => 850.00,
-        ]);
-
-        CustomerLedger::query()->create([
-            'customer_id' => $customer2->id,
-            'sale_id' => $partialSale->id,
-            'type' => 'credit',
-            'amount' => 350.00,
-            'date' => now()->toDateString(),
-            'description' => 'د بل نمبر '.$partialSale->id.' پاتې پور',
         ]);
 
         // جلا د پور تادیه (پرته له بل)

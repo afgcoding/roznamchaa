@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources\Wholesalers\Schemas;
 
-use App\Support\NumberFormat;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Section;
@@ -46,11 +45,15 @@ class WholesalerForm
                             ->placeholder(__('e.g. 15000'))
                             ->helperText(__('How much you currently owe this wholesaler (qarz).'))
                             ->required()
-                            ->numeric()
+                            ->rule('numeric')
+                            ->inputMode('decimal')
                             ->default(0)
                             ->prefix('AFN')
                             ->minValue(0)
-                            ->formatStateUsing(fn ($state) => $state === null || $state === '' ? $state : NumberFormat::trim($state, 2))
+                            ->extraInputAttributes([
+                                // Block letters/symbols on keypress; numeric rule also validates on save.
+                                'x-on:keydown' => 'const k=$event.key; if ($event.ctrlKey||$event.metaKey||$event.altKey||k.length!==1) return; if (!/[0-9.]/.test(k)) $event.preventDefault()',
+                            ])
                             ->columnSpanFull(),
                     ]),
             ]);

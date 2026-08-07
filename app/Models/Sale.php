@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Concerns\BelongsToStore;
+use App\Services\CustomerDueService;
 use App\Support\NumberFormat;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -26,6 +27,17 @@ class Sale extends Model
             'paid_amount' => 'decimal:2',
             'due_amount' => 'decimal:2',
         ];
+    }
+
+    protected static function booted(): void
+    {
+        static::saved(function (Sale $sale): void {
+            CustomerDueService::syncSaleCreditLedger($sale);
+        });
+
+        static::deleting(function (Sale $sale): void {
+            CustomerDueService::deleteSaleCreditLedger($sale);
+        });
     }
 
     /**

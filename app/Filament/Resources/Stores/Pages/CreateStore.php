@@ -3,9 +3,13 @@
 namespace App\Filament\Resources\Stores\Pages;
 
 use App\Filament\Resources\Stores\StoreResource;
+use App\Models\Store;
+use App\Models\User;
 use Filament\Actions\Action;
 use Filament\Resources\Pages\CreateRecord;
 use Filament\Support\Icons\Heroicon;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class CreateStore extends CreateRecord
 {
@@ -42,6 +46,39 @@ class CreateStore extends CreateRecord
         return parent::getCancelFormAction()
             ->label(__('Cancel'))
             ->icon(Heroicon::OutlinedXMark);
+    }
+
+    /**
+     * Create the store and its admin user in one transaction.
+     * Admin fields are form-only (not columns on stores).
+     *
+     * @param  array<string, mixed>  $data
+     */
+    protected function handleRecordCreation(array $data): Model
+    {
+        return DB::transaction(function () use ($data): Model {
+            $adminName = (string) $data['admin_name'];
+            $adminEmail = (string) $data['admin_email'];
+            $adminPassword = (string) $data['admin_password'];
+
+            unset($data['admin_name'], $data['admin_email'], $data['admin_password']);
+
+            /** @var Store $store */
+            $store = static::getModel()::query()->create($data);
+
+            $admin = User::query()->create([
+                'name' => $adminName,
+                'email' => $adminEmail,
+                'password' => $adminPassword,
+                'role' => User::ROLE_ADMIN,
+                'is_active' => true,
+            ]);
+
+            // Membership is via store_user pivot (not users.store_id).
+            $store->users()->attach($admin);
+
+            return $store;
+        });
     }
 
     protected function getRedirectUrl(): string

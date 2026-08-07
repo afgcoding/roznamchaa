@@ -80,7 +80,7 @@ class EditProduct extends EditRecord
             );
         }
 
-        foreach (['unit_conversion' => 3, 'cost_price' => 2, 'sale_price' => 2, 'stock_quantity' => 3] as $field => $decimals) {
+        foreach (['unit_conversion' => 3, 'cost_price' => 2, 'sale_price' => 2, 'wholesale_price' => 2, 'stock_quantity' => 3] as $field => $decimals) {
             if (array_key_exists($field, $data) && $data[$field] !== null && $data[$field] !== '') {
                 $data[$field] = NumberFormat::trim($data[$field], $decimals);
             }

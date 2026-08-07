@@ -13,6 +13,11 @@ class ViewStore extends ViewRecord
 {
     protected static string $resource = StoreResource::class;
 
+    protected function resolveRecord(int|string $key): \Illuminate\Database\Eloquent\Model
+    {
+        return parent::resolveRecord($key)->load(['users' => fn ($query) => $query->orderBy('name')]);
+    }
+
     protected function getHeaderActions(): array
     {
         return [

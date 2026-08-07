@@ -2,8 +2,10 @@
 
 namespace App\Filament\Resources\Products\Tables;
 
+use App\Enums\StoreFeature;
 use App\Filament\Resources\Products\Concerns\ProtectsProductsUsedInSales;
 use App\Support\NumberFormat;
+use App\Support\StoreFeatures;
 use Filament\Actions\ActionGroup;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
@@ -61,12 +63,23 @@ class ProductsTable
                     ->icon(Heroicon::OutlinedBanknotes)
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('sale_price')
-                    ->label(__('Sale Price'))
+                    ->label(fn (): string => StoreFeatures::enabled(StoreFeature::WholesalePricing)
+                        ? __('Retail Price')
+                        : __('Sale Price'))
                     ->formatStateUsing(fn ($state): string => 'AFN '.NumberFormat::trim($state, 2))
                     ->sortable()
                     ->icon(Heroicon::OutlinedBanknotes)
                     ->badge()
                     ->color('warning'),
+                TextColumn::make('wholesale_price')
+                    ->label(__('Wholesale Price'))
+                    ->formatStateUsing(fn ($state): string => $state === null || $state === ''
+                        ? '—'
+                        : 'AFN '.NumberFormat::trim($state, 2))
+                    ->sortable()
+                    ->icon(Heroicon::OutlinedBanknotes)
+                    ->visible(fn (): bool => StoreFeatures::enabled(StoreFeature::WholesalePricing))
+                    ->toggleable(),
                 TextColumn::make('stock_quantity')
                     ->label(__('Stock'))
                     ->formatStateUsing(fn ($state): string => NumberFormat::trim($state, 3))

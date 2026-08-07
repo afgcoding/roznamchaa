@@ -2,7 +2,9 @@
 
 namespace App\Filament\Resources\Products\Schemas;
 
+use App\Enums\StoreFeature;
 use App\Support\NumberFormat;
+use App\Support\StoreFeatures;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
@@ -45,26 +47,28 @@ class ProductInfolist
                     ->columns(3)
                     ->schema([
                         TextEntry::make('purchaseUnit.name')
-                            ->label(__('Purchase Unit'))
+                            ->label(__('Packaging Unit'))
                             ->badge()
-                            ->color('primary'),
+                            ->color('primary')
+                            ->visible(fn (): bool => StoreFeatures::enabled(StoreFeature::MultiUnitConversion)),
                         TextEntry::make('saleUnit.name')
                             ->label(__('Sale Unit'))
                             ->badge()
                             ->color('success'),
                         TextEntry::make('unit_conversion')
-                            ->label(__('Unit Conversion'))
+                            ->label(__('Items per Package'))
                             ->formatStateUsing(fn ($state): string => NumberFormat::trim($state, 3))
                             ->badge()
                             ->color('warning')
-                            ->helperText(__('Sale units inside one purchase unit.')),
+                            ->helperText(__('Sale units inside one packaging unit.'))
+                            ->visible(fn (): bool => StoreFeatures::enabled(StoreFeature::MultiUnitConversion)),
                     ]),
 
                 Section::make(__('Pricing'))
                     ->description(__('Cost and sell prices in AFN.'))
                     ->icon(Heroicon::OutlinedBanknotes)
                     ->columnSpanFull()
-                    ->columns(2)
+                    ->columns(fn (): int => StoreFeatures::enabled(StoreFeature::WholesalePricing) ? 3 : 2)
                     ->schema([
                         TextEntry::make('cost_price')
                             ->label(__('Cost Price'))
@@ -72,10 +76,21 @@ class ProductInfolist
                             ->badge()
                             ->color('gray'),
                         TextEntry::make('sale_price')
-                            ->label(__('Sale Price'))
+                            ->label(fn (): string => StoreFeatures::enabled(StoreFeature::WholesalePricing)
+                                ? __('Retail Price')
+                                : __('Sale Price'))
                             ->formatStateUsing(fn ($state): string => 'AFN '.NumberFormat::trim($state, 2))
                             ->badge()
                             ->color('success'),
+                        TextEntry::make('wholesale_price')
+                            ->label(__('Wholesale Price'))
+                            ->formatStateUsing(fn ($state): string => $state === null || $state === ''
+                                ? '—'
+                                : 'AFN '.NumberFormat::trim($state, 2))
+                            ->badge()
+                            ->color('info')
+                            ->placeholder('—')
+                            ->visible(fn (): bool => StoreFeatures::enabled(StoreFeature::WholesalePricing)),
                     ]),
 
                 Section::make(__('Stock'))

@@ -84,15 +84,19 @@ class StatsOverviewWidget extends BaseWidget
 
     protected function totalCustomerDebt(): float
     {
-        $credits = (float) CustomerLedger::query()
+        $invoiceDue = (float) Sale::query()->sum('due_amount');
+
+        $standaloneCredits = (float) CustomerLedger::query()
             ->where('type', 'credit')
+            ->whereNull('sale_id')
             ->sum('amount');
 
-        $payments = (float) CustomerLedger::query()
+        $standalonePayments = (float) CustomerLedger::query()
             ->where('type', 'payment')
+            ->whereNull('sale_id')
             ->sum('amount');
 
-        return max(0, $credits - $payments);
+        return max(0, round($invoiceDue + $standaloneCredits - $standalonePayments, 2));
     }
 
     /**

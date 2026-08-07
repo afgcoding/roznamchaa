@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Enums\StoreFeature;
+use App\Enums\StorePlanType;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -16,18 +18,32 @@ class Store extends Model
     {
         return [
             'is_active' => 'boolean',
+            'plan_type' => StorePlanType::class,
         ];
     }
 
     protected static function booted(): void
     {
         static::creating(function (Store $store): void {
+            if (blank($store->plan_type)) {
+                $store->plan_type = StorePlanType::Grocery;
+            }
+
             if (filled($store->slug)) {
                 return;
             }
 
             $store->slug = static::uniqueSlugFor($store->name);
         });
+    }
+
+    public function hasFeature(StoreFeature $feature): bool
+    {
+        $plan = $this->plan_type instanceof StorePlanType
+            ? $this->plan_type
+            : StorePlanType::Grocery;
+
+        return $plan->has($feature);
     }
 
     public static function uniqueSlugFor(string $name): string

@@ -69,6 +69,7 @@ class RegisterStore extends RegisterTenant
             'name' => $data['name'],
             'slug' => $data['slug'] ?? Store::uniqueSlugFor($data['name']),
             'is_active' => true,
+            'plan_type' => 'grocery',
         ]);
 
         $store->users()->attach($user);

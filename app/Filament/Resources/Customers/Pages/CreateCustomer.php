@@ -2,7 +2,9 @@
 
 namespace App\Filament\Resources\Customers\Pages;
 
+use App\Enums\StoreFeature;
 use App\Filament\Resources\Customers\CustomerResource;
+use App\Support\StoreFeatures;
 use Filament\Actions\Action;
 use Filament\Resources\Pages\CreateRecord;
 use Filament\Support\Icons\Heroicon;
@@ -42,6 +44,19 @@ class CreateCustomer extends CreateRecord
         return parent::getCancelFormAction()
             ->label(__('Cancel'))
             ->icon(Heroicon::OutlinedXMark);
+    }
+
+    /**
+     * @param  array<string, mixed>  $data
+     * @return array<string, mixed>
+     */
+    protected function mutateFormDataBeforeCreate(array $data): array
+    {
+        if (! StoreFeatures::enabled(StoreFeature::CreditLimit)) {
+            $data['credit_limit'] = $data['credit_limit'] ?? 0;
+        }
+
+        return $data;
     }
 
     protected function getRedirectUrl(): string
